@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>calendar.html</title>
+  <style>
+    #show {
+      display: inline-block;
+      width: 420px;
+      height: 350px;
+      background-color: yellow;
+    }
+
+    #show span {
+      display: inline-block;
+      width: 90px;
+      height: 30px;
+      background-color: aqua;
+      text-align: center;
+      margin-top: 2px;
+      margin-left: 1px;
+    }
+  </style>
+</head>
+
+<body>
+  <H3>달력</H3>
+  <input id="words" type="text"><button>검색삭제</button>
+  <div id="show">
+   
+
+  </div>
+
+  <!-- <table border="1">
+      <thead>
+        <tr>
+          <td>sun</td>
+          <td>mon</td>
+          <td>tue</td>
+          <td>wed</td>
+          <td>thr</td>
+          <td>fri</td>
+          <td>sat</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+          <td>12</td>
+          <td>13</td>
+        </tr>
+      </tbody>
+    </table> -->
+
+
+  <!-- <script src="calendarFun.js"></script> -->
+  <!-- <script src = "calendarObj.js"></script> -->
+  <script>
+    let words =
+      `Lorem ipsum dolor`;
+      // sit, amet consectetur adipisicing elit. Maxime consequuntur nesciunt minima veniam? Dignissimos iure, repellat laborum voluptatum non laudantium facilis repellendus animi magnam in culpa vel! Ab, reiciendis accusantium?`;
+      const wordArray = words.split(' ');
+
+
+      //삭제이벤트
+      // 초기값으로 60이라는 값
+
+       wordArray.forEach(word => {
+          let span = document.createElement('span');
+          span.innerText = word;
+          show.append(span);
+      })
+
+      let initSecs = 10;
+      //let missionSuccess = false;
+
+      let job = setInterval(function(){  
+        let targetElem = document.querySelectorAll('#show span');
+       console.log(initSecs--);
+         if(initSecs == 0 && targetElem.length > 0){
+          alert('실패');
+          clearInterval(job); //작업종료
+         }else if(initSecs != 0 && targetElem.length == 0){
+          alert('성공1');
+          clearInterval(job);
+         }else if(initSecs == 0 && targetElem.length == 0){
+          alert('성공2');
+          clearInterval(job);
+         }
+        })
+
+
+      document.querySelector('#words').addEventListener('change', function(){
+        let targetElem = document.querySelectorAll('#show span'); //NodeList반환
+        //console.log(targetElem.length);
+        let aa = 0;
+        targetElem.forEach(span => {
+          let search = document.getElementById('words').value;
+          if(span.innerText == search){
+            span.remove();
+            console.log(targetElem.length);
+          }else{
+            aa = 1;
+          }
+        })
+        if(aa == 1){
+          alert('틀림');
+        }
+        document.getElementById('words').value = '';
+      });
+
+      // document.querySelector('button').addEventListener('click', function(){
+      //   let targetElem = document.querySelectorAll('#show span');
+      //   //console.log(span.innerText, document.getElementById('words').value)
+      //   targetElem.forEach(span =>{
+      //     let search = document.getElementById('words').value;
+      //     //console.log(span.innerText, search);
+      //     if(span.innerText == search){
+      //       span.remove();
+      //     }else{
+      //       alert('다시검색')
+      //       //words.clear();
+      //       words.focus();
+      //       return;
+      //     }
+      //   })
+      //  document.getElementById('words').value = '';
+      // });
+
+      
+
+      // function searchWord(){
+      //   let val = word.value;
+      //   console.log(val);
+      //   for(i = 0; i<=wordArray.forEach.length; i++){
+      //     console.log(wordArray.forEach.length);
+      //     // if(val == wordArray.i){
+      //     // alert('찾음')
+      //   }
+      // //   }
+      //   if(val == wordArray.i){
+      //     alert('찾음')
+      //   }
+        // wordArray.forEach(word => {
+        // let span = document.createElement('span');
+        // span.innerText = word;
+        // show.append(span)
+      
+      
+  </script>
+</body>
+
+</html>

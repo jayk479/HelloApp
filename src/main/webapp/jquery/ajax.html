@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Ajax Form</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+		$(function() {
+			$("form").on("submit", function(event) {	// <form>요소에 "submit" 이벤트가 발생할 때,
+				event.preventDefault();					// 서버로 전송하지 않음.
+        console.log(decodeURIComponent($(this).serialize()));
+				$("#text").html($(this).serialize());	// 입력받은 데이터를 직렬화하여 나타냄.
+				
+				
+				//ajax call
+				$.ajax($(this).attr('action')+"?"+$(this).serialize())
+				.done(function(msg){
+					console.log(msg);
+				})
+				.fail(function(err){
+					console.log(err);
+				})
+				.always(function(){
+					console.log("final.")
+				})
+			});
+
+			
+      //$('input[name="nickname"]').val();
+		});
+	</script>
+</head>
+
+<body>
+
+	<h1>직렬화(serialization)</h1>
+	<form action="../AjaxServlet">
+		자신의 별명을 적어주세요 : <br>
+		<input type="text" name="nickname" value="홍길동"><br><br>
+
+		현재 살고 있는 지역을 선택해 주세요 : <br>
+		<input type="radio" name="region" value="서울" checked> 서울 <br>
+		<input type="radio" name="region" value="경기"> 경기 <br>
+		<input type="radio" name="region" value="대전"> 대전 <br>
+		<input type="radio" name="region" value="부산"> 부산 <br>
+		<input type="radio" name="region" value="광주"> 광주 <br><br>
+
+		좋아하는 음악 장르를 모두 골라주세요 : <br>
+		<input type="checkbox" name="music" value="팝" checked> 팝 <br>
+		<input type="checkbox" name="music" value="재즈"> 재즈 <br>
+		<input type="checkbox" name="music" value="댄스"> 댄스 <br>
+		<input type="checkbox" name="music" value="발라드"> 발라드 <br><br>
+
+		<input type="submit" value="전송">
+	</form>
+	<p id="text"></p>
+	
+</body>
+
+</html>

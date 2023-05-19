@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>webapp/jquery/index.html</title>
+  <!-- <script src="../js/jquery-3.7.0.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="fetchMember.js"></script>
+  <script>
+
+  </script>
+</head>
+
+<body>
+  <ul id="list">
+    <li>aaa</li>
+    <li>bbb</li>
+  </ul>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <td><input type="text" id="id"></td>
+    </tr>
+    <tr>
+      <th>firstName</th>
+      <td><input type="text" id="firstName"></td>
+    </tr>
+    <tr>
+      <th>lastName</th>
+      <td><input type="text" id="lastName"></td>
+    </tr>
+    <tr>
+      <th>gender</th>
+      <td>
+        <select id='gender'>
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+          <option value="Non-binary">Non-binary</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button>등록</button><button>변경</button><button>선택된tr이동</button>
+      </td>
+    </tr>
+  </table>
+
+  <div id="show">
+    <p><span>Hello</span><button>Click</button></p>
+    <p><span>World</span><button>Click</button></p>
+    <p><span>Good</span><button>Click</button></p>
+  </div>
+
+  <div id="show2">
+    <p><span>Hello</span><button>Click</button></p>
+    <p><span>World</span><button>Click</button></p>
+    <p><span>Good</span><button>Click</button></p>
+    <p>He<b>llo</b></p>
+  </div>
+
+  <table style="display:none;">
+    <tr class="template">
+      <td>1</td>
+      <td>Saunder</td>
+      <td>Kinzett</td>
+      <td>Male</td>
+      <td><button>삭제</button></td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

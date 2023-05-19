@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<ul id="list"></ul>
+	<table border='1'>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>fname</th>
+				<th>lname</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		<tbody id="tlist">
+			<tr>
+
+			</tr>
+		</tbody>
+	</table>
+	<script>
+		// json포맷의 데이터 활용
+		// data.txt -> 홍길동 user01 010-1111-2222 
+		// 예전엔 xml형태로 가져옴ㅇㅇ
+		// xml -> <data><name>홍길동</name><id>user01</id><phone>010-1111-2222</phone></data>
+		// document.querySelector('name').innerText
+
+		// 현재는 자바스크립트의 오브젝트타입처럼
+		//{"name" : "홍길동", "id" : "user01", "phone" : "010-1111-2222"} : json포맷
+		let json = ' {"name" : "홍길동", "id" : "user01", "phone" : "010-1111-2222"} ';
+		//json -> objext로 변경
+
+		let obj = JSON.parse(json);
+		//console.log(obj);
+		//console.log(obj.name, obj.id, obj.phone);
+
+		let id = document.createElement('li');
+		id.innerText = obj.id;
+		document.getElementById('list').append(id);
+
+		let name = document.createElement('li');
+		name.innerText = obj.name;
+		document.getElementById('list').append(name);
+
+		// 비동기방식처리 => 대표적 XMLHttpRequest, fetch
+
+		let xhtp = new XMLHttpRequest();
+		xhtp.open('get', 'MOCK_DATA.json'); // 서버에 요청할 페이지정보
+		// 파라미터 : 요청방식, url
+		xhtp.send(); // 실제 페이지요청
+		xhtp.onload = function() {
+			console.log(xhtp);
+			let result = JSON.parse(xhtp.response); //json포맷을 -> object 문자열임ㅇㅇ
+
+			let tlist = document.getElementById('tlist');
+			// tbody 태그의 id값
+			for (let i = 0; i < result.length; i++) {
+				//console.log(result[i]);
+				let tr = document.createElement('tr');
+				let td = document.createElement('td');
+
+				td.innerText = result[i].id;
+				tr.append(td); //<tr><td>....</td></tr>
+
+				td = document.createElement('td');
+
+				td.innerText = result[i].first_name;
+				tr.append(td);
+
+				td = document.createElement('td');
+
+				td.innerText = result[i].last_name;
+				tr.append(td);
+
+				// button 생성
+				// button => <td><button>삭제</button></td>
+				let btn = document.createElement('button');
+				btn.addEventListener('click', function(){
+					btn.parentElement.parentElement.remove(); 
+					//btn.remove(); //화면에서 제거
+				})
+				
+				btn.innerText = '삭제';
+				td = document.createElement('td');
+				td.append(btn);
+				tr.append(td);
+				
+				tlist.append(tr);
+
+			}
+
+		}
+	</script>
+</body>
+</html>

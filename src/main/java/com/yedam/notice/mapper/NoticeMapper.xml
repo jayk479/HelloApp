@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.notice.mapper.NoticeMapper">
+
+	<select id="getEmp" parameterType="int" resultType="employee">
+		select * from
+		employees where employee_id = #{empId}
+	</select>
+	<select id="empList" resultType="employee">
+		select * from employees order by
+		employee_id
+	</select>
+	<delete id="delEmp" parameterType="int">
+		delete from employees where
+		employee_id = #{empId}
+	</delete>
+	<insert id="addEmp" parameterType="employee">
+		insert into employees
+		(employee_id, last_name, email, job_id, hire_date, )
+		values(#{employeeId}, #{lastName}, #{email}, #{jobId}, sysdate,)
+	</insert>
+
+	<!-- 공지사항 -->
+	<select id="noticeList" resultType="notice">
+		<![CDATA[
+		select * from tbl_notice 
+		where rownum <= 10 
+		order by 1 desc
+		]]>
+	</select>
+
+	<select id="noticeWithPage" resultType="notice">
+		<![CDATA[
+		select b.*
+		from(select rownum rn, a.*
+		from (select * from tbl_notice order by 1 desc)a
+		where rownum <=#{page} * 10) b
+		where b.rn > (#{page}-1) * 10
+		]]>
+	</select>
+	<insert id="insertNotice" parameterType="notice">
+		insert into tbl_notice
+		(notice_id, notice_writer, notice_title, notice_subject, attach_file)
+		values(notice_seq.nextval,#{noticeWriter},#{noticeTitle},#{noticeSubject},
+		#{attachFile})
+	</insert>
+
+	<update id="updateNotice" parameterType="notice">
+		update tbl_notice
+		set
+		notice_title = #{noticeTitle},
+		notice_subject = #{noticeSubject}
+		where notice_id = #{noticeId}
+	</update>
+	<delete id="deleteNotice" parameterType="int">
+		delete from tbl_notice
+		where notice_id = #{noticeId}
+	</delete>
+
+	<select id="searchNotice" resultType="notice"
+		parameterType="int">
+		select * from tbl_notice where notice_id = #{noticeId}
+	</select>
+
+	<update id="updateCount" parameterType="int">
+		update tbl_notice set
+		hit_count=hit_count+1 where notice_id=#{noticeId}
+	</update>
+	<select id="getCount" resultType="int">
+		select count(*) from tbl_notice
+	</select>
+</mapper>
+
+<!-- mapper는 자바 클래스라고 보면 됨ㅇㅇ -->
+<!-- 현재 단건조회 -->

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div id = "show">
+ <div id="child">
+ 	<p>Hello</p>
+ </div>
+ <ul>
+ 	<li>Apple</li>
+ 	<li>Banana</li>
+ </ul>
+</div>
+<script>
+	let name = "홍길동";
+	/*
+	console.log(name);
+	let num = 100;
+	num = "apple";
+	num = 100 > 20;
+	
+	console.log(num);
+	console.log(typeof num);
+	
+	let obj = {};
+	obj.id = 'user01';
+	obj.name = 'hong';
+	obj.hobbies = ['reading', 'sleeping', 'eating' ];
+	console.log(obj);
+	console.log(obj.hobbies[0]);
+	for(let hobby of obj.hobbies){
+		console.log(hobby);
+	}
+	console.clear();
+	for(let prop in obj){
+		console.log(prop, obj[prop]); //prop 속성, 값
+	}
+	console.log(window);
+	
+	window.alert('hi');
+	
+	//document object model
+	console.log(window.document);
+	console.log(window.document.children);
+	console.log(window.document.children[0].children);
+	
+	*/
+	
+	
+	let child = document.getElementById('child');
+	let elem = document.querySelector('li');
+	elem.innerText = '사과';
+	//console.log(elem.innerText);
+	//console.log(child.parentElement.parentElement);
+	//console.log(child.nextElementSibling);
+	//console.log(child.nextElementSibling.children[0]);
+	elem = document.querySelector('li:nth-of-type(2)');
+	console.log(elem.innerText)
+	elem.addEventListener('click', function(){
+		alert(elem.innerText);
+	})
+	
+	
+</script>
+</body>
+</html>

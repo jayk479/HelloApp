@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<input type="text" id="fruit">
+	<button id="addBtn">추가</button>
+	<ul id="list">
+		<li>Apple</li>
+		<li>Banana</li>
+		<li>Mango</li>
+		<li>Melon</li>
+	</ul>
+	
+	<input type="text" name="userId">
+	<input type="text" name="userName">
+	<button id="tBtn">추가</button>
+	
+	<table id="tbl">
+		<tbody id="tlist">
+		<tr>
+			<td>user01</td>
+			<td>Hong</td>
+		</tr>
+		</tbody>
+	</table>
+	<script>
+		document.getElementById('addBtn').addEventListener("click",function(){
+			let val = document.getElementById('fruit').value;
+			let li = document.createElement('li'); // <li></li>
+			li.innerText = val;
+			document.getElementById('list').append(li);
+		});
+		
+		//2개 값을 등록
+		document.getElementById('tBtn').addEventListener("click", function(){
+			let tr = document.createElement('tr');
+			let td = document.createElement('td');
+			td.innerText = document.querySelector('input[name="userId"]').value;
+			tr.append(td);
+			td = document.createElement('td');
+			td.innerText = document.querySelector('input[name="userName"]').value;
+			tr.append(td);
+			document.getElementById('tlist').append(tr);		
+		});
+		
+		document.querySelectorAll('li').forEach(item => {
+			item.addEventListener('click', function(){
+			this.remove();
+			})
+		});
+	</script>
+
+</body>
+</html>

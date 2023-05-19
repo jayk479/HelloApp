@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Element Remove</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="fetchMember.js"></script>
+	<script>
+		$(function() {
+			var data;
+			$("#detachBtn").on("click", function() {
+				data = $(".content").remove();	// class가 "content"인 요소를 모두 삭제함.
+			});
+			$("#restoreBtn").on("click", function() {
+				$("#container").append(data);	// detach() 메소드로 삭제되었던 모든 요소를 다시 추가함.
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+	<h1>.detach() 메소드</h1>
+	<div id="container">
+		<div>첫 번째 컨텐츠에요!</div>
+		<div class="content">두 번째 컨텐츠에요!</div>
+		<div class="content">세 번째 컨텐츠에요!</div>
+	</div>
+	<br>
+	<button id="detachBtn">div 요소 삭제</button>
+	<button id="restoreBtn">div 요소 복구</button>
+	
+</body>
+
+</html>

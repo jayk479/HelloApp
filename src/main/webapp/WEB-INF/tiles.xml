@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="myapp.homepage"
+		template="/layouts/classic.jsp">
+		<put-attribute name="title"
+			value="Tiles tutorial homepage" />
+		<put-attribute name="header" value="/tiles/banner.jsp" />
+		<!-- classic.jsp에 header라는 banner.jsp넣을거임? tiles 폴더안에 header.jsp 파일을 header위치에 
+			넣을 거임? -->
+		<put-attribute name="menu"
+			value="/tiles/common_menu.jsp" />
+		<put-attribute name="body" value="/tiles/home_body.jsp" />
+		<put-attribute name="footer" value="/tiles/credits.jsp" />
+	</definition>
+
+	<definition name="heollapp"
+		template="/WEB-INF/layout/template.jsp">
+		<put-attribute name="sidebar"
+			value="/WEB-INF/layout/sidebar.jsp" />
+		<put-attribute name="nav"
+			value="/WEB-INF/layout/nav.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/layout/body.jsp" />
+	</definition>
+	<definition name="WILDCARD:notice/*" extends="heollapp">
+		<put-attribute name="body"
+			value="/WEB-INF/views/notice/{1}.jsp">
+		</put-attribute>
+	</definition>
+	<definition name="WILDCARD:member/*" extends="heollapp">
+		<put-attribute name="body"
+			value="/WEB-INF/views/member/{1}.jsp">
+		</put-attribute>
+	</definition>
+	<definition name="WILDCARD:product/*" extends="heollapp">
+		<put-attribute name="body"
+			value="/WEB-INF/views/product/{1}.jsp">
+		</put-attribute>
+	</definition>
+	<definition name="WILDCARD:*/*" extends="myapp.homepage">
+		<!-- 페이지정보가 넘어올 때 정의 된 구문 확장해서 어떤 페이지가 들어와서 body부분은 web-inf/views/아래 어떤 
+			페이지든 보일 수 있게 이부분 순서 의미있음 cuz 등록된 순서대로 처리되기 때문에ㅇㅇ -->
+		<put-attribute name="body"
+			value="/WEB-INF/views/{1}/{2}.jsp">
+		</put-attribute>
+	</definition>
+
+
+</tiles-definitions>

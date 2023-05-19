@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Fade Animation</title>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background-color: yellow;
+			border: 5px solid orange;
+			margin-top: 20px;
+		}
+	</style>
+	<script>
+		$(function() {
+			$("#fadeBtn").on("click", function() {
+				// id가 "divBox_01"인 요소를 2초에 걸쳐 opacity 속성값을 0.2까지만 변경시킴.
+				$("#divBox_01").fadeTo(2000, 0.2);
+				// id가 "divBox_02"인 요소를 2초에 걸쳐 opacity 속성값을 0.5까지만 변경시킴.
+				$("#divBox_02").fadeTo(2000, 0.5);
+				// id가 "divBox_03"인 요소를 2초에 걸쳐 opacity 속성값을 0.8까지만 변경시킴.
+				$("#divBox_03").fadeTo(2000, 0.8);
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+	<h1>페이드 효과의 투명도 설정</h1>
+	<button id="fadeBtn">페이드 아웃</button>
+	<div id="divBox_01"></div>
+	<div id="divBox_02"></div>
+	<div id="divBox_03"></div>
+	
+</body>
+
+</html>

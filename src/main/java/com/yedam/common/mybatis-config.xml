@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="com/yedam/common/db.properties"></properties>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="jdbcTypeForNull" value="NULL" /> <!-- DB insert시 null값 그대로 입력해줌ㅇㅇ -->
+		<setting name="mapUnderscoreToCamelCase" value="true" /> <!-- DB 컬럼명_삭제 후 카멜케이스로 리네이밍 -->
+	</settings>
+	<typeAliases>
+		<typeAlias alias="notice"
+			type="com.yedam.notice.domain.NoticeVO" /> <!-- alias지정해서 구구절절 안 적어도 되게 -->
+		<typeAlias alias="employee" type="com.yedam.domain.Employee" />
+		<typeAlias alias="member" type="com.yedam.member.domain.MemberVO" /> 
+		<typeAlias alias="reply" type="com.yedam.notice.domain.ReplyVO" /> 
+		
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/yedam/notice/mapper/NoticeMapper.xml" />
+		<mapper resource="com/yedam/member/mapper/MemberMapper.xml" />
+		<mapper resource="com/yedam/notice/mapper/ReplyMapper.xml" />
+		<mapper resource="com/yedam/member/mapper/EventMapper.xml" />
+	</mappers>
+</configuration>
