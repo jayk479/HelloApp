@@ -26,6 +26,9 @@ public class ModifyNoticeControl implements Control {
 			return "notice/noticeModify.tiles";
 			
 		} else if (req.getMethod().equals("POST")) {
+			
+			
+			
 			NoticeVO vo = new NoticeVO();
 			String nid = req.getParameter("nid");
 

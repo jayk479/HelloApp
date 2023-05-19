@@ -89,10 +89,10 @@ public class AddNoticeControl implements Control {
 //				return "main.do";
 //			}
 			
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<>();
 			Gson gson = new GsonBuilder().create();
 			if (service.addNotice(vo)) {
-				map.put("retCode", "Succes");
+				map.put("retCode", "Success");
 				map.put("retVal", vo);
 				// return "Success.json";
 			} else {

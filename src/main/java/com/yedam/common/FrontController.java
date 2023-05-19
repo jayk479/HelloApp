@@ -23,6 +23,7 @@ import com.yedam.notice.control.AddNoticeControl;
 import com.yedam.notice.control.AddReplyControl;
 import com.yedam.notice.control.GetNoticeControl;
 import com.yedam.notice.control.ModifyNoticeControl;
+import com.yedam.notice.control.ModifyNoticeFileControl;
 import com.yedam.notice.control.ModifyReplyControl;
 import com.yedam.notice.control.NoticeAddForm;
 import com.yedam.notice.control.NoticeListControl;
@@ -31,6 +32,7 @@ import com.yedam.notice.control.RemoveNoticeControl;
 import com.yedam.notice.control.RemoveNoticeJsonControl;
 import com.yedam.notice.control.RemoveReplyControl;
 import com.yedam.notice.control.ReplyListControl;
+import com.yedam.notice.control.getNoticeJsonControl;
 
 public class FrontController extends HttpServlet{
 	
@@ -55,8 +57,10 @@ public class FrontController extends HttpServlet{
 		map.put("/addNotice.do", new AddNoticeControl());
 		//1.단건조회
 		map.put("/getNotice.do", new GetNoticeControl());
+		map.put("/getNoticeJson.do", new getNoticeJsonControl());
 		//2.수정
 		map.put("/modifyNotice.do", new ModifyNoticeControl());
+		map.put("modifyNoticeFile.do", new ModifyNoticeFileControl());
 		//3.삭제
 		map.put("/removeNotice.do", new RemoveNoticeControl());
 		map.put("/removeNoticeJson.do", new RemoveNoticeJsonControl());
