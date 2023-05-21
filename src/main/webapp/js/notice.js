@@ -41,7 +41,7 @@ $(document).ready(function() {
 		let id = $(this).children().eq(0).text();
 		console.log(id);
 		$.ajax({
-			url: 'getNoticeJson.do',
+			url: 'getNoticeJson.do?nid='+id,
 			dataType: 'json',
 			error: function(xhr) {
 				console.log(xhr)
@@ -85,9 +85,9 @@ $(document).ready(function() {
 		data.append('nFile', e.target.files[0]);
 
 		console.log(data);
-		data.append('nfile', $())
+		data.append('nFile', $())
 		$.ajax({
-			url: 'modifyNoticeFile.do?nid='+id,
+			url: 'modifyNoticeFile.do',
 			method: 'post',
 			data: data,
 			// multipart요청
