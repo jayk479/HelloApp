@@ -61,6 +61,13 @@
 		where
 		notice_id = #{noticeId}
 	</update>
+	
+	<update id="updateNoticeFile" parameterType="notice">
+		update tbl_notice set
+		attach_file = #{attachFile}
+		where notice_id = #{noticeId}
+	</update>
+	
 	<delete id="deleteNotice" parameterType="int">
 		delete from tbl_notice
 		where notice_id = #{noticeId}

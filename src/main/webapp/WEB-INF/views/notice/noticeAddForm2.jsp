@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="css/modal.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script src="js/notice.js"></script>
+<script src="js/noticeAsync.js"></script>
+<!-- <script src="js/notice.js"></script> -->
 
 <h3>공지사항등록페이지</h3>
 <form action="addNotice.do" method="post" enctype="multipart/form-data">
@@ -42,6 +43,7 @@
 				<th>글번호</th>
 				<th>제목</th>
 				<th>작성자</th>
+				<th>내용</th>
 				<th>첨부파일</th>
 			</tr>
 		</thead>
@@ -69,7 +71,7 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td class="nTitle"></td>
+					<td><textarea class="nTitle"></textarea></td>
 				</tr>
 				<tr>
 					<th>작성자</th>

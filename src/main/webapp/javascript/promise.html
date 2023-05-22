@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>promise.html</title>
+  <script>
+    // 서버에 데이터를 요청하는 비동기방식처리
+    let id = '';
+    let name = '';
+    setTimeout(function () {
+      id = 'user1';
+
+      setTimeout(function () {
+        console.log(id);
+        name = '사용자1';
+        setTimeout(function () {
+          console.log(name);
+        }, 1000)
+      }, 500);
+    }, 1000);
+    console.log(id);
+
+    //상기방법보다는 then으로하는게 나음ㅇㅇ
+
+    //책 6장ㅇㅇ p.240 
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(function () {
+        resolve('OK');
+      }, 1000);
+    });
+    promise
+      .then(function (resolve) {
+        console.log(resolve);
+        return resolve.toLowerCase();
+      })
+      .then(function (result) {
+        console.log(result)
+      })
+      .catch(function (reject) {
+        console.log(reject);
+      })
+
+    //fetch
+    let result = fetch('MOCK_DATA.json');
+    let result1 = result.then(function (data) {
+      return data.json(); // 문자열 : json => object
+    })
+    result1
+      .then(function (result2) {
+        console.log(result2);
+      })
+      .catch(reject => console.log)
+
+    //fetch().then().then().then().catch();
+
+    //promise : async, await
+    async function getServData() { 
+      let promise = await fetch('MOCK_DATA.json');
+      let promise1 = await promise.json();
+      console.log(promise1);
+    }
+    console.clear();
+    getServData();
+  </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

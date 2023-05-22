@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>arrayMethod.html</title>
+  <script src="memberList.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script>
+    // $(document).ready(function(){
+
+    //   let sum = 0;
+    //   data.forEach(function (item, idx, ary) {
+    //     //회원아이디 / 이름 / 급여 / 누적급여?
+    //     sum += item.salary;
+    //     //console.log(item);
+    //     let tr = $('<tr />').append($('<td />').text(item.id),
+    //                                  $('<td />').text(item.first_name),
+    //                                 $('<td />').text(item.salary),
+    //                                 $('<td />').text(sum)
+    //     );
+    //     $('#show table').append(tr);
+    //   })
+    // })
+  </script>
+  <script>
+    console.log(data);
+
+    //배열메소드 : forEach(item, idx, ary)
+    // 
+    //let sum = 0;
+    // let cnt = 0;
+    // let avg = 0;
+
+    // let result = data.forEach(function (item, idx, ary) { //매개값으로 함수
+    //   // item 배열 안의 값들
+    //   // idx 위치값
+    //   // ary 배열 그 자체
+    //   //console.log(item);
+    //   // if(idx%2 == 1){
+    //   //   console.log(item);
+    //   // }
+    //   // if(item.gender == 'Male'){
+    //   //   console.log(item);
+    //   // }
+    //   // if (item.salary > 3500 && item.gender == 'Female') {
+    //   //   sum += item.salary;
+    //   //   cnt++;
+    //   // }
+    // })
+    // console.log('합계 : ' + sum + ', 평균 : ' + (sum / cnt));
+    // console.log(result); //unefined
+
+    // //map() => 배열의 갯수만큼 새로운 형태의 값을 반환
+    // // A -> A'
+    // result = data.map(function (item) { //map은 새로운 배열 반환(갯수 같음)
+    //   let male =  {}
+    //   male.id = item.id;
+    //   male.name = item.first_name + '-' + item.last_name;
+    //   return male;
+    // })
+    // console.clear();
+    // console.log(result);
+
+
+    // //filter() => 조건을 만족하는 새로운 배열 생성
+    // result = data.filter(function(item){
+    //   return item.gender == 'Male'; //return 값이 true인 경우에만 담음ㅇㅇ
+    // });
+
+    // console.clear();
+    // console.log(result);
+
+    //reduce() => 반환되는 값이 배열, number, 문자 ...
+    let sum = 0;
+    result = data.reduce(function (a, b, c, d) {
+      // a, b, c, d = acc, val, idx, ary
+      return a += b.salary;
+    }, sum);
+    console.log(result);
+
+
+    let easyAry = ['one', 'two', 'three'];
+    // result = easyAry.reduce(function(acc, val){
+    //   console.log(acc, val);
+    //   return acc + '-' + val;
+    // },'zero') // 'zero' 는 초기값, 초기값 없으면 알아서 첫번째 두번째로 연산함ㅇㅇ
+
+    //   result = easyAry.reduce(function(acc, val){
+    //    console.log(acc, val);
+    //    acc.push(val.toUpperCase());
+    //    return acc;
+    //  }, []); //초기값에 배열도 가능ㅇㅇ
+    //  console.log(result);
+    document.addEventListener('DOMContentLoaded', function () {
+      // id/ name / gender/ salary
+      result = data.reduce(function (acc, val, idx, ary) {
+        if(val.gender == 'Female'){
+          let tr = $('<tr />').append($('<td />').text(val.id),
+          $('<td />').text(val.first_name),
+          $('<td />').text(val.gender),
+          $('<td />').text(val.salary));
+          acc.append(tr);
+        }
+        return acc;
+      }, $('<table />'));
+      $('#show').append(result);
+
+      //   //  result = easyAry.reduce(function(acc, val){
+
+      //   //   console.log(acc, val);
+      //   //    let p = document.createElement('p');
+      //   //    p.innerText = val;
+      //   //    acc.append(p);
+
+      //   //    return acc;
+      //   //  }, document.getElementById('show')); // 다양한초기값ㅇㅇ
+      //   //  console.log(result);
+      //   result = easyAry.reduce(function (acc, val, idx) {
+      //     //console.log(acc, val);
+      //     acc += '<tr><td>' + ++idx + '</td>' + '<td>' + val + '</td></tr>';
+      //     //  let tr = document.createElement('tr');
+      //     //  let td = document.createElement('td');
+      //     //  td.innerText = val;
+      //     //  tr.append(td);
+      //     return acc;
+      //   }, '<table border = "1">'); // 다양한초기값ㅇㅇ
+      //   result += "</table>";
+
+      //   //console.log(result);
+      //   document.getElementById('show').innerHTML = result;
+    })
+
+    //splice()
+    data = [];
+    data.push({id : data.length+1, name : 'Apple'});
+    data.push({id : data.length+1, name : 'Banana'}); // .push()제일 마지막에 들어감
+    data.unshift({id : data.length+1, name : 'Cherry'}); //.unshift()제일 앞에 들어감ㅇㅇ
+    // 두번째에 넣고싶다? splice()
+    data.splice(1, 0,{id : data.length+1, name : 'Melon'}); //(인덱스, 인덱스부터몇번?, 대체값)
+    // data.shift();
+    //data.splice(2, 1); // 지우는 거 (인덱스 2번에서 첫번째 거까지? 대체값 안 적으면 지움ㅇㅇ)
+    console.clear();
+    console.log(data);
+    
+    // Array.some() 검색ㅇㅇ
+    result = data.some(function(item){
+      return item.name == 'Banana';
+    })
+    console.log(result); // true
+
+    result = data.every(function(item){ 
+      return item.name.length >= 5; //item.name의 길이가 모두 5자 이상이라면 true반환ㅇㅇ
+    })
+    console.log(result); // true
+
+    //from() 문자열 값을 배열로 바꿔주는 것ㅇㅇ 정적메소드
+    result = Array.from('abcde');
+    console.log(result);
+
+    //split() 도 비슷, 구분자 있으면 ex) , .split(',').reverse() //역순정렬 
+    result = "abcde".split('');
+    console.log(result);
+
+    //sort() 정렬ㅇㅇ
+    data = ['Banana', 'Cherry', 'Apple'];
+    result = data.sort(); 
+    console.log(result); // Apple, Banana, Cherry
+    
+  </script>
+</head>
+
+<body>
+  <div id="show">
+    <table border="1">
+      <!-- <tr>
+      <td>1</td><td>홍길동</td><td>3500</td><td>3500</td>
+    </tr>
+    <tr>
+      <td>2</td><td>김길동</td><td>2800</td><td>6300</td>
+    </tr>
+    <tr>
+      <td>3</td><td>박길동</td><td>4000</td><td>10300</td>
+    </tr> -->
+    </table>
+  </div>
+</body>
+
+</html>

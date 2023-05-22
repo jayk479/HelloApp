@@ -34,14 +34,13 @@ function deleteRow() {
 // multipart request
 $(document).ready(function() {
 
-
 	//modal처리, 라이브이벤트처리 == 추후 추가된 요소들에도 적용됨ㅇㅇ
 	$('#noticeList').on('dblclick', 'tr', function() {
 		//ajax호출 nid 활용
 		let id = $(this).children().eq(0).text();
 		console.log(id);
 		$.ajax({
-			url: 'getNoticeJson.do?nid='+id,
+			url: 'getNoticeJson.do?nid=' + id,
 			dataType: 'json',
 			error: function(xhr) {
 				console.log(xhr)
@@ -93,11 +92,44 @@ $(document).ready(function() {
 			// multipart요청
 			contentType: false,
 			processData: false,
+			error: function(err) {
+				console.error(err)
+			},
+			success: function(result) {
+				//console.log(result);
+				//이미지변경
+				$('img.nFile').attr('src', 'images/' + result.attachFile);
+			}
+		});
+	})
+
+	//모달창의 수정버튼 클릭
+	$('div.modal-body button').on('click', function() {
+		let id = $('div.modal-body td.nid').text();
+		let title = $('div.modal-body textarea.nTitle').val();
+		let subject = $('div.modal-body textarea.nSubject').val();
+
+		$.ajax({
+			url: 'modifyNoticeJson.do',
+			method: 'post',
+			data: {
+				nid: id,
+				title: title,
+				subject: subject
+			},
 			error: function() {
 
 			},
-			success: function(data) {
-
+			success: function(result) {
+				if (result.retCode == 'Success') {
+					//console.log(result.retVal); // id, title, file...
+					$('#tr_' + result.retVal.noticeId).find('img').attr('src', 'images/' + result.retVal.attachFile);
+					$('#tr_' + result.retVal.noticeId).find('td:eq(1)').text(result.retVal.title);
+					$('#tr_' + result.retVal.noticeId).find('td:eq(3)').text(result.retVal.subject);
+					$('#myModal').hide();
+				} else if (result.retCode == 'Fail') {
+					alert('에러발생')
+				}
 			}
 		});
 	})
@@ -133,6 +165,7 @@ $(document).ready(function() {
 						$('<td />').text(val.noticeWriter),
 						$('<td />').append($('<img>').css('width', '50px').attr("src", 'images/' + val.attachFile)),
 						$('<td />').append($('<button />').text('삭제').on('click', deleteRow)));
+					tr.attr('id', 'tr_' + val.noticeId);
 					$('#noticeList').prepend(tr);
 					$('form')[0].reset();
 					//초기화하는거ㅇㅇ 폼의 reset이벤트호출
@@ -170,6 +203,7 @@ $(document).ready(function() {
 				let tr = $('<tr />').append($('<td />').text(notice.noticeId),
 					$('<td />').text(notice.noticeTitle),
 					$('<td />').text(notice.noticeWriter),
+					$('<td />').text(notice.noticeSubject),
 					$('<td />').append($('<img>').css('width', '50px').attr("src", 'images/' + notice.attachFile)),
 					$('<td />').append($('<button />').text('삭제').on('click', deleteRow))); // 한 건 삭제
 				$('#noticeList').append(tr);

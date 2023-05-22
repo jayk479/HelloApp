@@ -11,6 +11,7 @@ public interface NoticeService {
 	
 	public boolean addNotice(NoticeVO vo);
 	public boolean modifiyNotice(NoticeVO vo);
+	public boolean modifiyNoticeFile(NoticeVO vo); //파일정보변경
 	public boolean removeNotice(int noticeId);
 	public NoticeVO getNoticeVo(int noticeId);
 	public int totalCount();

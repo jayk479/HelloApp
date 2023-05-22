@@ -52,4 +52,10 @@ public class NoticeServiceImpl implements NoticeService{
 		return mapper.getCount();
 	}
 
+	@Override
+	public boolean modifiyNoticeFile(NoticeVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateNoticeFile(vo) == 1;
+	}
+
 }
