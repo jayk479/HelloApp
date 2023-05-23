@@ -138,7 +138,6 @@ input {
 					},
 					success : function(data) {
 						console.log(data);
-						//console.log(data[0].id);
 						//리스트만들기
 						data.data.forEach(function(data){
 							let li = $('<li />').attr('id', data.id).text(
@@ -179,7 +178,7 @@ input {
 						$(this).closest('li').css('display', 'none');
 					}));
 			$('#myUL').prepend(li);
-
+			addTodo.val('');
 	}
 
 	//  Create a new list item when clicking on the "Add" button
