@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v03_event1.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+
+</head>
+
+<body>
+  <div id="app">
+   <label>이름</label><input v-model="name">
+   <label>성적</label><input v-model="score">
+   <button v-on:click="saveScore">저장</button><br>
+  <button v-on:click="sortList">이름순정렬</button>
+   <h3>학생목록</h3>
+   <ul>
+    <li v-for="(std, idx) in studentList">{{std.name}} - {{std.score}} - {{idx}} <button v-bind:ord="idx" v-on:click="removeLi(idx)">삭제</button><li>
+   </ul>
+  </div>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        studentList:[{name : 'test', score: 80}, {name : 'test2', score: 86}], //[{name : ??, score: ??}]
+        name:'',
+        score:''
+      },
+      methods:{
+        saveScore(){
+          //console.log(this.name, this.score)
+          this.studentList.push({name : this.name, score: this.score})
+          //console.log(studentList);
+        },
+        removeLi(idx){
+          //this.studentList.pop();
+          //console.log(idx);
+          this.studentList.splice(idx, 1);
+          return this.studentList;
+        },
+        sortList(){
+          let sortedAry = this.studentList.sort(function(a, b){
+            var a = a.name;
+            var b = b.name;
+            if(a>b){
+              return 1;
+            }else{
+              return -1;
+            }
+          });
+          //console.log(sortedAry)
+          this.studentList = sortedAry;
+        }
+      },
+      updated: function(){
+        console.log('updated hook.');
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>

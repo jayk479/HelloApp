@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v01_instance1.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+<body>
+  <div id="app">
+    <p>{{myNum * 20}}</p>
+    <p>{{myBool}}</p>
+    <p>{{myArry[0]}}</p>
+    <p>{{myObj.name}}</p>
+  </div>
+  <script>
+    new Vue({
+      el : '#app',
+      data : {
+        myNum : 123,
+        myBool : true,
+        myArry : ['다즐링', '얼그레이', '실론'],
+        myObj : {
+          name : '홍차', price : 2000
+        }
+      }
+    })
+  </script>
+
+  <div id="app2">
+    <img src="images/product-fullsize.png" style="width: 150px">
+    <img v-bind:src="srcName" v-bind:style="myStyle">
+    <a v-bind:href="myHref">{{linkName}}</a>
+  </div>
+  <script>
+    let vm2 = new Vue({
+      el : '#app2',
+      data : {
+        srcName : 'images/product-fullsize.png',
+        myStyle : {width: '150px', height : '100px'},
+        linkName : '다음',
+        myHref : 'https://www.daum.net'
+      }
+    })
+  </script>
+
+  <div id="app3">
+    <p v-bind:style="myStyle">Hello, World</p>
+    <button v-on:click="changeColor">Change Color</button>
+  </div>
+  <script>
+    let vm3 = new Vue({
+      el : '#app3',
+      data : {
+        myStyle : {color : 'red', border : '2px solid blue'}
+      },
+      methods : {
+        changeColor : function(){  //클릭 시 불러올 콜백함수
+          this.myStyle = {color : 'green', border : '3px dotted red'}
+          //vue가 객체라서 this.myStyle 가능 this는 현재 new Vue
+          console.log(vm2);
+          vm2.myStyle = {height : '150px', width : '200px'}
+        } //vm3 인스턴스 안에 할당 된 메소드 vm2인스턴스 가져와서 수정 가능ㅇㅇ
+      }
+    });
+
+    class Student {
+      constructor(name, grade){
+        this.name = name;
+        this.grade = grade;
+      }
+      showName(){
+        return this.name;
+      }
+    }
+    let hong = new Student('Hong', 3);
+    console.log(hong.showName());
+
+
+  </script>
+</body>
+</html>

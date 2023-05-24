@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v01_instance2.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+  <style>
+    .strike-throug{
+      text-decoration: line-through;
+      color: lightgray;
+    }
+    .dark{
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+  <!-- v-bind : 속성, v-on : 이벤트 -->
+  <div id="app">
+    <p class="strike-throug dark">클래스지정</p>
+    <p v-bind:class="myClass">bind지정</p>
+    <p v-bind:class="[{'strike-throug' : isOK}, {'dark' : isDark}]">bind2지정</p>
+    <!--isOK true면 'strike-throug' 값 적용-->
+  </div>
+  <script>
+    new Vue({
+      el : '#app',
+      data : {
+        myClass : ['strike-throug', 'dark'],
+        isOK : true,
+        isDark : false
+      }
+    })
+  </script>
+  <div id="app2">
+    <!-- v-model : 양방향ㅇㅇ -->
+    <input v-model="myName">
+    <p>내 이름은 {{myName}}, {{myName.length}}입니다.</p>
+    <input type="checkbox" v-model="myCheck" true-value="yes" false-value="no">
+    <div>
+      <label><input type="checkbox" v-model="hobbies" value="reading">독서</label>
+      <label><input type="checkbox" v-model="hobbies" value="movie">영화</label>
+      <label><input type="checkbox" v-model="hobbies" value="writing">글쓰기</label>
+      <p>취미 : {{hobbies}}</p>
+    </div>
+    <div>
+      <label><input type="radio" v-model="rData" value="reading">독서</label>
+      <label><input type="radio" v-model="rData" value="movie">영화</label>
+      <label><input type="radio" v-model="rData" value="writing">글쓰기</label>
+      <p>취미 : {{rData}}</p>
+    </div>
+  </div>
+  
+  <script>
+    new Vue({
+      el : '#app2',
+      data : {
+        myName : '',
+        myCheck : 'yes',
+        hobbies : ['reading', 'movie', 'writing'],
+        rData : 'reading' //초기값ㅇㅇ
+      }
+    });
+  </script>
+
+
+
+</body>
+</html>

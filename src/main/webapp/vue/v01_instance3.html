@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v01_instance3.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <select v-model="myColor">
+      <option value="">색을선택하세요</option>
+      <option value="red">red</option>
+      <option value="green">green</option>
+      <option value="blue">blue</option>
+      <option value="orange">orange</option>
+      <option value="yellow">yellow</option>
+    </select>
+    <p v-bind:style="{color:myColor}">선택한색상은 {{myColor}}</p>
+    <label><input v-model="myAgree" type="checkbox">동의</label>
+    <button v-bind:disabled="!myAgree">가입</button><br>
+
+    <input v-model="firstVal" v-on:keyup="updateModel()">
+    <input v-model="lastVal">
+    <p>{{resultVal}}</p>
+  </div>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        myColor: '', //['red', 'green', 'blue', 'orange', 'yellow']
+        myAgree: false,
+        firstVal: 10,
+        lastVal: 5
+        //resultVal : parseInt(this.firstVal) + parseInt(this.lastVal) 
+        // 여기는 값이 고정되어 버려서 연산하는 데이터는 안 됨.
+        // computed로 함수형식으로 적용하기ㅇㅇ
+      },
+      computed: {
+        resultVal: function () {
+          return parseInt(this.firstVal) + parseInt(this.lastVal);
+        }
+      },
+      methods: {
+        updateModel: function(){
+          console.log(event);
+          if(event.key == 'ArrowUp'){
+            this.firstVal++;
+          }else if(event.key == 'ArrowDown'){
+            this.firstVal--;
+          }
+        }
+      },
+      updated: function () {
+          console.log('firstVal : ' + this.firstVal + ', lastVal : ' + this.lastVal);
+
+      }
+    });
+  </script>
+
+
+</body>
+
+</html>
