@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v05_componentEx2.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <h3>간단한게시판</h3>
+    <board-list v-if="isList" v-on:board-write="boardWrite" v-bind:object="boardArray" v-on:board-read="boardRead"></board-list>
+    <board-read v-if="isRead" v-on:board-list="boardList" v-bind:object="boardInfo"></board-read>
+    <board-wirte v-if="isWrite" v-on:board-list="boardList"></board-wirte>
+  </div>
+
+  <!--컴포넌트자동완성용-->
+
+  <!--컴포넌트자동완성용-->
+  <script>
+    //컴포넌트 3개
+    // 게시판 - 목록, 상세보기, 쓰기
+    const BoarList = {
+      template: `
+        <div>
+          <table border = "1">
+            <thead>
+              <tr>
+                <th>글번호</th>
+                <th>글제목</th>
+                <th>조회수</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in object">
+                <td>{{item.no}}</td>
+                <td v-on:click="boardRead(item)">{{item.title}}</td>
+                <td>{{item.view}}</td>
+                <td><button>삭제</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button v-on:click="boardWrite">글쓰기</button>
+        </div>
+      `,
+      props: ['object'],
+      methods: {
+        boardWrite: function () {
+          this.$emit('board-write');
+        },
+        boardRead: function(board){
+          //한 건 조회
+          this.$emit('board-read', board);
+          // 두번째 값은 매개변수자리임ㅇㅇ 여기선 board 이거ㅇㅇ
+        }
+      }
+    }
+    const BoardRead = {
+      template: `
+        <div>
+          <table border = "1">
+            <tr>
+              <th>글제목</th>
+              <th>{{object.title}}</th>
+            </tr>
+            <tr>
+              <td colspan="2">{{object.content}}</td>
+            </tr>
+          </table>
+          <button v-on:click="boardList">목록</button>
+        </div>
+      `,
+      props:['object'],
+      methods: {
+        boardList: function () {
+          this.$emit('board-list');
+        }
+      }
+    }
+    const BoardWirte = {
+      template: `
+        <div>
+          <table border="1">
+            <tr>
+              <th>글제목</th>
+              <td><input v-model="title"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <textarea v-model="content"></textarea>
+              </td>
+            </tr>
+          </table>
+          <button v-on:click="boardSave">저장</button>
+          <button v-on:click="boardList">목록</button>
+        </div>
+      `,
+      data: function () {
+        return {
+          title: '',
+          content: ''
+        }
+      },
+      methods: {
+        boardSave: function () {
+
+        },
+        boardList: function () {
+          this.$emit('board-list');
+        }
+      }
+    } // end of components
+
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        isList: true,
+        isRead: false,
+        isWrite: false,
+        boardArray: [{
+            no: 1,
+            title: '첫번째글입니다',
+            content: 'Vue가 지루합니다',
+            view: 1
+          },
+          {
+            no: 2,
+            title: '뷰를 활용합시다',
+            content: 'Vue의 기능을 익힙시다',
+            view: 5
+          },
+          {
+            no: 3,
+            title: '리액트공부합시다',
+            content: 'React가 좋아요',
+            view: 3
+          }
+        ],
+        boardInfo :{}
+      },
+      methods: {
+        boardList: function () {
+          this.isList = true;
+          this.isRead = false;
+          this.isWrite = false;
+        },
+        boardRead: function (board) {
+          this.isList = false;
+          this.isRead = true;
+          this.isWrite = false;
+
+          //상세화면에출력
+          this.boardInfo = board;
+        },
+        boardWrite: function () {
+          this.isList = false;
+          this.isRead = false;
+          this.isWrite = true;
+        }
+      },
+      components: {
+        'board-list': BoarList,
+        'board-read': BoardRead,
+        'board-wirte': BoardWirte
+      }
+    })
+  </script>
+</body>
+
+</html>

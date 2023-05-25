@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v05_componentEx.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <p>현재 참여자 수 : {{count}} 명</p>
+    <!--보여져야 할 것은 부모요소에 있고 참여자 정보는 하위요소에서 받아 상위에 반영하게?-->
+    <!--실질적 화면구성자체는 이하 input-component 얘가 함ㅇㅇ-->
+    <input-component v-on:up-count="countUp"></input-component>
+  </div>
+
+  <script>
+    const inputComponent = {
+      //템플릿 안에는 상위 태그가 하나 있어야 됨?
+      template: `
+        <div>
+          <div class="userAdd">
+            <div class="nameInfo">
+              <label for="userName">이름</label>
+              <input id="userName" v-model="userName">
+            </div>
+            <div class="ageInfo">
+              <label for="userAge">나이</label>
+              <input id="userAge" v-model.number="userAge">
+            </div>
+            <div class="deptInfo">
+              <label for="userDept">소속</label>
+              <select id="userDept" v-model="userDept">
+                <option>학생</option>
+                <option>교사</option>
+              </select>
+            </div>
+            <div class="inputInfo">
+              <h2>등록 예정자 정보</h2>
+              <p> 이름 : {{userName}} </p>
+              <p> 나이 : {{userAge}} </p>
+              <p> 소속 : {{userDept}} </p>
+            </div>
+            <button v-on:click="insertUsers">등록</button>
+          </div>
+          <div class="userList">
+            <print-component v-for="user in userList" v-bind:userInfo="user"></print-component>
+          </div>
+        </div>
+      `,
+      data: function () {
+        return {
+          // 컴포넌트의 데이터는 루트 데이터처럼 정의가 되는 게 아니고 리턴 되는 값에 정의 되어야 한다
+          userName: '',
+          userAge: 0,
+          userDept: '',
+          userList: []
+        }
+      },
+      methods: {
+        insertUsers: function () {
+          this.userList.push({
+            name: this.userName,
+            age: this.userAge,
+            dept: this.userDept
+          })
+          this.$emit('up-count'); // 상위요소의 이벤트를 트리거 
+        }
+      },
+      components: {
+        'print-component': {
+          template: `
+            <div>
+              <p>이름 : {{userInfo.name}}, 나이 : {{userInfo.age}}, 소속 : {{userInfo.dept}}</p>  
+            </div>
+          `,
+          props: ['userInfo']
+        }
+      }
+    } // end of const inputComponent
+
+    new Vue({
+      el: '#app',
+      data: {
+        count: 0
+      },
+      methods: {
+        countUp: function () {
+          this.count++;
+        }
+      },
+      components: {
+        'input-component': inputComponent
+      }
+    })
+  </script>
+</body>
+
+</html>

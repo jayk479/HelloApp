@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v04_component1.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+  <script>
+     Vue.component('my-component', {
+      template: `
+      <div>
+        <h1>사용자 정의 전역컴포넌트입니다</h1>
+      </div>
+      `
+    }) // 정적메소드로선언하면? 전역 컴포넌트
+  </script>
+</head>
+
+<body>
+  <div id="app">
+    <my-component></my-component>
+    <instance-component></instance-component>
+  </div>
+  <script>
+    new Vue({
+      el:'#app',
+      components:{
+        'instance-component' : {
+          //instanceComponent라고 써도 됨ㅇㅇCUZ여기는JAVASCRIPT영역임ㅇㅇ
+          //지역컴포넌트는 해당 VUE인스턴스 안에서만 적용됨ㅇㅇ
+          template : `
+          <div style="border:1px solid black">
+            <span><h3>지역컴포넌트 입니다</h3></span>
+          </div>
+          `
+        }
+      }
+    })
+  </script>
+  <hr>
+  <div id="app2">
+    <my-component></my-component>
+    <instance-component v-bind:message="msg"></instance-component>
+   
+  </div>
+  <script>
+    new Vue({
+      el: '#app2',
+      data:{
+        msg:'hello'
+      },
+      components:{
+        'instance-component':{
+          template:`
+          <div>
+            <strong>새로운 지역컴포넌트입니다.</strong>
+            <p>{{message}}</p>
+            <p>{{innerMsg}}</p>
+            <button v-on:click="changeMsg">변환</button>
+            </div>
+          `, 
+          props:['message'],
+          data:function(){
+            return {
+              innerMsg:"hi, world"
+            }
+          },
+          methods: {
+            changeMsg: function(){
+              this.innerMsg = "안녕하세요"
+            }
+          }
+        }
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v04_component2.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <my-comp></my-comp>
+  </div>
+
+  <script>
+    Vue.component('my-comp', {
+      template: '<button v-on:click="incrementCounter">{{counter}}</button>',
+      methods:{
+        incrementCounter: function(){
+          this.counter++;
+        }
+      }, 
+      data:function(){
+        return {
+          counter : 0
+        }
+      }
+    })
+    new Vue({
+      el: '#app',
+
+    })
+  </script>
+  <hr>
+  <div id="app2">
+    <p>{{counter}}</p>
+    <button v-on:click="countUp">증가</button>
+    <count-component v-on:child-count="countUp"></count-component>
+    <!--컴포넌트 안에 사용자 임의의 이벤트 적용하고 해당 이벤트를 자식요소에서 호출해서 하위요소에서 상위요소의 것 변경 가능ㅇㅇ-->
+    <!--부모요소의 사용자정의이벤트 여러개일 수 있음?-->
+  </div>
+  <script>
+    new Vue({
+      el:'#app2',
+      data:{
+        counter : 0
+      },
+      methods:{
+        countUp : function(){
+          this.counter++;
+        }
+      },
+      components:{
+        //컴포넌트 안에서 선언된 것은 여기서 다 해결해야 함ㅇㅇ
+        'count-component' :{
+          template:`
+          <div>
+            <button v-on:click="childCountUp">하위요소의증가</button>
+          </div>
+          `,
+          methods:{
+            childCountUp: function(){
+              this.$emit('child-count'); //$emit 기억하기
+              //상위 요소에 있는 이벤트를? 트리거하세요 = 호출하세요
+              console.log(this);
+            }
+          }
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>
