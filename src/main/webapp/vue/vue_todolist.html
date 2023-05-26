@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v06_component3.html</title>
+  <style>
+    .done-style {
+      text-decoration: line-through;
+      color: lightgray;
+    }
+  </style>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+  <div id="app">
+    <title-component v-bind:site-title="siteTitle"></title-component>
+    <list-component v-bind:todolist="todoList"></list-component>
+    <input-component v-bind:input-todo="newTodo" v-on:new-todo="newTodo"></input-component>
+    <btn-component v-on:sort-list="sortList" v-on:delete-list="delList"></btn-component>
+    <p>{{doneCount}} / {{listCount}}</p>
+  </div>
+
+  <script>
+    const titleComponent = {
+      template: `
+        <div>
+          <h1>{{siteTitle}}</h1>  
+        </div>
+      `,
+      props: ['siteTitle']
+    }
+
+    const listComponent = {
+      template: `
+      <div>
+        <ul>
+          <li v-for="todo in todolist" v-bind:class="{'done-style' : todo.done}" ><input type="checkbox" v-model="todo.done">{{todo.todo}} (완료일 : {{todo.date}})</li>
+        </ul>
+      </div>
+      `,
+      props: ['todolist', 'checkstyle']
+    }
+
+    const inputComponent = {
+      template: `
+      <div>
+        <input type="text" v-model="todo" placeholder="todolist"><input type="text" v-model="date" placeholder="YYYYMMDD" v-on:keyup.13="newTodo">
+      </div>
+      `,
+      data: function () {
+        return {
+          todo: '',
+          date: ''
+        }
+      },
+      methods: {
+        newTodo: function () {
+          this.$emit('new-todo', this.todo, this.date);
+        }
+      }
+    }
+
+    const btnComponent = {
+      template: `
+      <div>
+        <button v-on:click="delList">처리완료삭제</button>
+        <button v-on:click="sortList">처리완료일순정렬</button>
+      </div>
+      `,
+      methods: {
+        sortList: function () {
+          this.$emit('sort-list')
+        },
+        delList: function () {
+          this.$emit('delete-list')
+        }
+      }
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        siteTitle: 'TodoList',
+        todo: '',
+        date: '',
+        todoList: [{
+            done: false,
+            todo: 'coffee',
+            date: '20230526'
+          },
+          {
+            done: false,
+            todo: 'bread',
+            date: '20230726'
+          },
+          {
+            done: false,
+            todo: 'tea',
+            date: '20230626'
+          },
+          {
+            done: true,
+            todo: 'tea2',
+            date: '20230426'
+          }
+        ]
+      },
+      methods: {
+        newTodo: function (todo, date) {
+          //console.log(todo, date);
+          this.todoList.push({
+            done: false,
+            todo: todo,
+            date: date
+          })
+        },
+        sortList: function (atodo, btodo) {
+          let sortedAry = this.todoList.sort(function (a, b) {
+            var a = a.date;
+            var b = b.date;
+            if (a > b) {
+              return 1;
+            } else {
+              return -1;
+            }
+          })
+          this.todoList = sortedAry;
+        },
+        delList: function () {
+          this.todoList = this.todoList.filter(function (todo) {
+            return todo.done == false;
+          })
+        }
+      },
+      computed: {
+        listCount: function () {
+          return this.todoList.length;
+        },
+        doneCount: function () {
+          let done = this.todoList.filter(todo => todo.done == true).length;
+          return done;
+        }
+      },
+      components: {
+        'title-component': titleComponent,
+        'list-component': listComponent,
+        'input-component': inputComponent,
+        'btn-component': btnComponent
+      }
+    })
+  </script>
+
+</body>
+
+</html>

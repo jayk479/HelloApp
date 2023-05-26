@@ -13,9 +13,10 @@
 
   <div id="app">
     <h3>간단한게시판</h3>
-    <board-list v-if="isList" v-on:board-write="boardWrite" v-bind:object="boardArray" v-on:board-read="boardRead"></board-list>
+    <board-list v-if="isList" v-on:board-write="boardWrite" v-bind:object="boardArray" v-on:board-read="boardRead"
+      v-on:board-delete="boardDelete"></board-list>
     <board-read v-if="isRead" v-on:board-list="boardList" v-bind:object="boardInfo"></board-read>
-    <board-wirte v-if="isWrite" v-on:board-list="boardList"></board-wirte>
+    <board-wirte v-if="isWrite" v-on:board-list="boardList" v-on:board-save="boardSave"></board-wirte>
   </div>
 
   <!--컴포넌트자동완성용-->
@@ -37,11 +38,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in object">
+              <tr v-for="(item, idx) in object">
                 <td>{{item.no}}</td>
                 <td v-on:click="boardRead(item)">{{item.title}}</td>
                 <td>{{item.view}}</td>
-                <td><button>삭제</button></td>
+                <td><button v-bind:ord="idx" v-on:click="boardDelete(item.no)">삭제</button></td>
               </tr>
             </tbody>
           </table>
@@ -53,10 +54,16 @@
         boardWrite: function () {
           this.$emit('board-write');
         },
-        boardRead: function(board){
+        boardRead: function (board) {
           //한 건 조회
           this.$emit('board-read', board);
           // 두번째 값은 매개변수자리임ㅇㅇ 여기선 board 이거ㅇㅇ
+        },
+        boardDelete: function (no) {
+          //console.log(this.object[idx]);
+          // this.object.splice(idx, 1);
+          // return this.object;
+          this.$emit('board-delete', no)
         }
       }
     }
@@ -75,7 +82,7 @@
           <button v-on:click="boardList">목록</button>
         </div>
       `,
-      props:['object'],
+      props: ['object'],
       methods: {
         boardList: function () {
           this.$emit('board-list');
@@ -103,12 +110,17 @@
       data: function () {
         return {
           title: '',
-          content: ''
+          content: '',
+          //newBoard:[]
         }
       },
       methods: {
         boardSave: function () {
-
+          // this.newBoard.push({
+          //   title: this.title,
+          //   content: this.content
+          // })
+          this.$emit('board-save', this.title, this.content);
         },
         boardList: function () {
           this.$emit('board-list');
@@ -141,7 +153,7 @@
             view: 3
           }
         ],
-        boardInfo :{}
+        boardInfo: {}
       },
       methods: {
         boardList: function () {
@@ -156,11 +168,45 @@
 
           //상세화면에출력
           this.boardInfo = board;
+
+          //조회수 증가
+          for (let i = 0; i < this.boardArray.length; i++) {
+            if (this.boardArray[i].no == board.no) {
+              this.boardArray[i].view++;
+            }
+          }
+
         },
         boardWrite: function () {
           this.isList = false;
           this.isRead = false;
           this.isWrite = true;
+        },
+        boardDelete: function (no) {
+          // 이거 안 됨. index가 바뀌어서 no-1이 변동됨ㅇㅇ
+          
+          // for(let i = 0; i<this.boardArray.length; i++){
+          //   if(this.boardArray[i].no == no){
+          //     console.log(this.boardArray[i].no)
+          //     this.boardArray.splice(no-1, 1);
+          //   }
+          // }
+          // return this.boardArray;
+
+
+          this.boardArray.forEach(function (board, idx, ary) {
+            if (board.no == no) {
+              ary.splice(idx, 1);
+            }
+          })
+        },
+        boardSave: function (title, content) {
+          let no = 1;
+          let idx = this.boardArray.length - 1;
+          no = parseInt(this.boardArray[idx].no) + 1
+          this.boardArray.push({no : no, title : title, content : content, view : 0})
+          
+          this.boardList();
         }
       },
       components: {

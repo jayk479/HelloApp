@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v06_component2.html</title>
+  <style>
+    #list {
+      width: 400px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    #list td,
+    #list th {
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    #list>thead>tr {
+      color: yellow;
+      background-color: purple;
+    }
+  </style>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h1>Todolist</h1>
+    <hr>
+    <h3>1차 대상자</h3>
+    <contactlist-component v-bind:contacts="list1"></contactlist-component>
+    <h3>2차 대상자</h3>
+    <contactlist-component v-bind:contacts="list2"></contactlist-component>
+  </div>
+
+
+  <script>
+    const ContactComponent = {
+      template: `
+      <div>
+        <table id="list">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>이름</th>
+              <th>전화번호</th>
+              <th>주소</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="contact in contacts">
+              <td>{{contact.no}}</td>
+              <td>{{contact.name}}</td>
+              <td>{{contact.tel}}</td>
+              <td>{{contact.addr}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+          `,
+      props: ['contacts']
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        list1: [{
+          no: 23,
+          name: '홍길동',
+          tel: '010-1111-1111',
+          addr: '대구 100'
+        }, {
+          no: 24,
+          name: '김길동',
+          tel: '010-2222-2222',
+          addr: '대구 200'
+        }, {
+          no: 25,
+          name: '박길동',
+          tel: '010-3333-3333',
+          addr: '대구 300'
+        }],
+        list2 : [{
+          no: 33,
+          name: '홍길동3',
+          tel: '010-1111-1111',
+          addr: '대구 100'
+        }, {
+          no: 34,
+          name: '김길동3',
+          tel: '010-2222-2222',
+          addr: '대구 200'
+        }]
+      },
+      components: {
+        'contactlist-component': ContactComponent
+      }
+    })
+  </script>
+
+</body>
+
+</html>

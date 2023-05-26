@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v06_component1.html</title>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <list-component v-bind:message="msg1"></list-component>
+      <list-component v-bind:message="msg2"></list-component>
+      <!--작은 단위들을 반복적으로 재생산하기위해 컴포넌트사용-->
+    </ul>
+  </div>
+ 
+  <script>
+    const listComponent = {
+      template:`
+          <li>{{message}}</li>
+          `,
+          props : ['message']
+    }
+    new Vue({
+      el:'#app',
+      data:{
+        msg1 : '안녕하세요2',
+        msg2 : 'Hello2'
+      },
+      components:{
+        'list-component' : listComponent   
+      }
+    })
+  </script>
+  
+</body>
+
+</html>

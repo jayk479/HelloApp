@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v06_component3.html</title>
+  <style>
+    .buttonstyle {
+      width: 120px;
+      height: 30px;
+      text-align: center;
+    }
+  </style>
+  <script src="http://unpkg.com/vue@2"></script>
+</head>
+
+<body>
+  <div id="app">
+    <parent-component v-bind:buttons="buttons"></parent-component>
+  </div>
+
+  <script>
+    const ChildComponent = {
+      template: `
+            <div>
+              <button class="buttonstyle" v-on:click="clickEvent" 
+              v-bind:data-lang="buttonInfo.value">{{buttonInfo.text}}</button>
+            </div> 
+          `,
+      props: ['buttonInfo'],
+      methods: {
+        clickEvent: function () {
+          this.$emit('timeClick', event.target.innerText, event.target.dataset.lang);
+        }
+      }
+    }
+    const ParentComponent = {
+      template: `
+      <div>
+        <child-component v-for="btn in buttons" v-bind:button-info="btn" 
+        v-on:timeClick="timeClickEvent"></child-component>
+        <hr>
+        <div>{{msg}}</div>
+      </div>
+      `,
+      props: ['buttons'],
+      data: function () {
+        return {
+          msg: ''
+        }
+      },
+      methods: {
+        timeClickEvent: function (k, v) {
+          this.msg = k + ',' + v;
+        }
+      },
+      components: {
+        'child-component': ChildComponent
+      }
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        buttons: [{
+            text: 'hello',
+            value: '영어'
+          },
+          {
+            text: '신짜오',
+            value: '베트남어'
+          },
+          {
+            text: '니하오',
+            value: '중국어'
+          }
+        ]
+      },
+      components: {
+        'parent-component': ParentComponent
+      }
+    })
+  </script>
+
+</body>
+
+</html>

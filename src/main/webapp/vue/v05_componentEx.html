@@ -18,43 +18,57 @@
     <input-component v-on:up-count="countUp"></input-component>
   </div>
 
-  <script>
-    const inputComponent = {
-      //템플릿 안에는 상위 태그가 하나 있어야 됨?
-      template: `
-        <div>
-          <div class="userAdd">
-            <div class="nameInfo">
-              <label for="userName">이름</label>
-              <input id="userName" v-model="userName">
-            </div>
-            <div class="ageInfo">
-              <label for="userAge">나이</label>
-              <input id="userAge" v-model.number="userAge">
-            </div>
-            <div class="deptInfo">
-              <label for="userDept">소속</label>
-              <select id="userDept" v-model="userDept">
-                <option>학생</option>
-                <option>교사</option>
-              </select>
-            </div>
-            <div class="inputInfo">
-              <h2>등록 예정자 정보</h2>
-              <p> 이름 : {{userName}} </p>
-              <p> 나이 : {{userAge}} </p>
-              <p> 소속 : {{userDept}} </p>
-            </div>
-            <button v-on:click="insertUsers">등록</button>
-          </div>
-          <div class="userList">
-            <print-component v-for="user in userList" v-bind:userInfo="user"></print-component>
-          </div>
+  <!-- start of input-component의 template -->
+  <!-- template는 script내에 따로 정의할 수 있음 -->
+  <script type="text/x-template" id="inputTemplate">
+    <!-- 템플릿 안에는 상위 태그가 하나 있어야 됨ㅇㅇ -->
+    <div>
+      <div class="userAdd">
+        <div class="nameInfo">
+          <label for="userName">이름</label>
+          <input id="userName" v-model="userName">
         </div>
-      `,
+        <div class="ageInfo">
+          <label for="userAge">나이</label>
+          <input id="userAge" v-model.number="userAge">
+        </div>
+        <div class="deptInfo">
+          <label for="userDept">소속</label>
+          <select id="userDept" v-model="userDept">
+            <option>학생</option>
+            <option>교사</option>
+          </select>
+        </div>
+        <div class="inputInfo">
+          <h2>등록 예정자 정보</h2>
+          <p> 이름 : {{userName}} </p>
+          <p> 나이 : {{userAge}} </p>
+          <p> 소속 : {{userDept}} </p>
+        </div>
+        <button v-on:click="insertUsers">등록</button>
+      </div>
+      <div class="userList">
+        <print-component v-for="user in userList" v-bind:userInfo="user"></print-component>
+      </div>
+    </div>
+  </script>
+  <!-- end of put-component의 template -->
+
+  <script>
+    const PrintComponent = {
+      template: `
+            <div>
+              <p>이름 : {{userInfo.name}}, 나이 : {{userInfo.age}}, 소속 : {{userInfo.dept}}</p>  
+            </div>
+          `,
+      props: ['userInfo']
+    }
+    const InputComponent = {
+      template: `#inputTemplate`,
       data: function () {
         return {
           // 컴포넌트의 데이터는 루트 데이터처럼 정의가 되는 게 아니고 리턴 되는 값에 정의 되어야 한다
+          // cuz 컴포넌트가 만들어 질 때마다 새롭게 데이터 객체 생성되기 떄문에ㅇㅇ
           userName: '',
           userAge: 0,
           userDept: '',
@@ -72,14 +86,7 @@
         }
       },
       components: {
-        'print-component': {
-          template: `
-            <div>
-              <p>이름 : {{userInfo.name}}, 나이 : {{userInfo.age}}, 소속 : {{userInfo.dept}}</p>  
-            </div>
-          `,
-          props: ['userInfo']
-        }
+        'print-component': PrintComponent
       }
     } // end of const inputComponent
 
@@ -94,7 +101,7 @@
         }
       },
       components: {
-        'input-component': inputComponent
+        'input-component': InputComponent
       }
     })
   </script>
