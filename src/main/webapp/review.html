@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>review.html</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+</head>
+
+<body>
+  <script>
+    /*
+      Vue.js
+      -> 자바스크립트 프레임워크 : 정해진 목적을 위한 틀 안에서 사용
+      -> 컴포넌트(Vue 객체)의 조합을 기반으로 SPA(Single Page Application)를 만든다.
+      
+      // Vue 객체의 속성
+      - el : Vue 객체가 마운트 될 태그
+      
+      // - 공통된 속성
+      data     : Vue가 다룰 데이터 -> 프로퍼티( CRUD가능 )
+      computed : Vue가 다룰 데이터 -> 산출 프로퍼티( 읽기 전용 )
+                => 반드시 data속성과 연결이 되어야 함( 의존적 )
+                => 여러번 호출 안 됨. 데이터 속성이 변화되어야 호출 됨
+      -> 프로퍼티
+      watch    : data혹은 computed, 정의된 모든 프로퍼티를 감시 가능
+              => 프로퍼티의 변화가 발생할 경우 미리 정의한 프로세스를 진행
+      methods  : Vue 안에서 사용할 모든 함수를 정의 ( 주로 이벤트 핸들러 정의 )
+      template : Vue 객체가 가지고 있는 태그의 정의
+      
+      // 컴포넌트 속성
+      props : 외부에서 들어오는 정보를 담을 프로퍼티 -> 가능한 읽기 전용으로 사용
+
+    */
+  </script>
+  <div id="app">
+    <h3>참여자 명단</h3>
+    <p>현재 참여자 수 : {{count}} 명</p>
+    <!-- 자식 컴포넌트 위치-->
+    <input-component v-on:insert-user-info="counting"></input-component>
+  </div>
+
+
+  <script>
+    //자손 컴포넌트
+    const printComponent = {
+      template: `
+          <div>
+            <p>이름 : {{name}}, 나이 : 만 {{age -1 }}, 소속 : {{dept}}</p>
+          </div>
+      `,
+      //props : ['name', 'age', 'dept'] -> 가장 기본
+      props : {
+        name : String,
+        age : {
+          type : Number,
+          default : -1
+        },
+        dept : String
+      }
+    }
+    //자식 컴포넌트
+    const inputComponent = {
+      template: `
+          <div>
+            <div>
+              <div>
+                <label for="user_name">이름</label>
+                <input type="text" id="user_name" v-model="userName">
+              </div>
+              <div>
+                <label for="user_age">나이</label>
+                <input type="number" id="user_age" v-model.number="userAge">
+              </div>
+              <div>
+                <label for="user_dept">소속</label>
+                <select id="user_dept" v-model="userDept">
+                <option>학생</option>
+                <option>교수</option>
+              </select>
+              </div>
+              <div>
+                <h2>등록예정참여자정보</h2>
+                <p>이름 : {{userInfo.name}}</p>
+                <p>나이 : {{userInfo.age}}</p>
+                <p>소속 : {{userInfo.dept}}</p>
+                </div>
+                <button v-on:click="insertUsers">등록</button>
+              </div>
+              <div>
+                <print-component v-for="item in userList" v-bind="item"></print-component>
+              </div>
+            </div>
+          </div>
+          `,
+      data: function () {
+        return {
+          userName: '',
+          userAge: 0,
+          userDept: '',
+          userList: []
+        }
+      },
+      computed: {
+        userInfo: function () {
+          return {
+            name: this.userName,
+            age: this.userAge,
+            dept: this.userDept
+          }
+        }
+      },
+      methods: {
+        insertUsers: function () {
+          //this.$emit('insert-user', this.userName, this.userAge, this.userDept)
+          // 1) userList에 추가
+          this.userList.push(this.userInfo);
+
+          // 2) input 초기화
+          this.userName = '';
+          this.userAge = 0;
+          this.userDept = '';
+
+          // 3) 부모컴포넌트에 값을 전달
+          this.$emit('insert-user-info');
+        }
+      },
+      components: {
+        'print-component': printComponent
+      }
+    }
+
+    //루트 컴포넌트
+    let app = new Vue({
+      el: '#app',
+      data: {
+        count: 0, // 참여자 수
+        userInfo: {},
+        userList: [],
+      },
+      components: {
+        //inputComponent // <= inputComponent : inputComponent <='input-component' : inputComponent
+        'input-component': inputComponent
+      },
+      methods: {
+        counting: function () {
+          this.count++;
+        },
+        today : function(){
+          let today = new Date();
+          let year = today.getFullYear();
+          let month = ('0' + (today.getMonth()+1)).slice(-2);
+          let day =  ('0' + (today.getDate())).slice(-2);
+
+          return year + '-' + month + '-' + day;
+        }
+      },
+      watch : {
+        count : function(){
+          let prevTag = document.querySelector('#app > p + p'); // 지정된 태그 바로 형제 태그 삭제
+
+          if(prevTag != null){
+            prevTag.remove();
+          }
+
+          let pTag = document.querySelector('p');
+          let massage = document.createElement('p')
+          massage.textContent = this.today() + ' 기준으로 최종 업데이트되었습니다.';
+          pTag.after(massage);
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

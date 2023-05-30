@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>slot01</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h3>자식 컴포넌트 출력</h3>
+    <!-- <my-component v-bind:parent="myText"></my-component> -->
+    <my-component>
+      <p> {{myText}} </p>
+    </my-component>
+  </div>
+
+  <script>
+    const myComponent = {
+      // 자식컴포넌트 안에 slot태그 이용해서 부모에게서 받은 데이터를 지정된 위치에 뿌리겠다ㅇㅇ
+      // 연산xx 자식컴포넌트는 해당 데이터 건들지xxx
+      // 모듈? 
+      template: `
+          <div>
+            <slot></slot>
+            <p> 자식 컴포넌트의 내용 </p>
+          </div>
+      `,
+      // props:['parent']
+    };
+
+    let test = new Vue({
+      el: '#app',
+      components: {
+        'my-component': myComponent
+      },
+      data: {
+        myText: '부모 컴포넌트의 데이터'
+      }
+    })
+  </script>
+  <hr>
+
+
+  <div id="app1">
+    <input type="text" v-model="message">
+    <child-component v-bind:text="'부모 컴포넌트에서 데이터를 넘겨줍니다'">
+      <template v-slot:header>
+        <p><em>헤더입니다</em></p>
+      </template>
+      <template v-slot:footer>
+        <h3>푸터입니다</h3>
+      </template>
+    </child-component>
+  </div>
+
+  <script>
+    let childComponent = {
+      template: `  <div>
+                      <!--header-->
+                      <slot name="header"></slot>
+                      <!--main-->
+                      <br>
+                      <h1>컴포넌트 자체 데이터입니다.</h1>
+                      {{text}}
+                      <!--footer-->
+                      <br>
+                      <slot name="footer"></slot>
+                    </div>`,
+      props: ['text']
+    };
+
+    let app = new Vue({
+      el: '#app1',
+      data: {
+        message: ''
+      },
+      components: {
+        'child-component': childComponent
+      }
+    })
+  </script>
+  <hr>
+  <div id="app2">
+    <form-component v-on:input-data="inputData">
+      <h1>{{header}}</h1>
+      <!--이전문법-->
+      <label for="first" slot="firstSlot">{{firstLable}}</label>
+      <label for="second" slot="secondSlot">{{secondLable}}</label>
+    </form-component>
+    <div>
+      <p> {{firstData}} </p>
+      <p> {{secondData}} </p>
+    </div>
+  </div>
+  <!--같은 컴포넌트를 로그인화면에 쓴다던가. slot을 활용해 컴포넌트의 재활용성을 높일 수 있다.-->
+  <script>
+    const formComponent = {
+      template: `
+            <div>
+              <form>
+                <slot></slot>
+                <slot name="firstSlot"></slot>
+                <input type="text" id="first" v-model="first"><br>
+                <slot name="secondSlot"></slot>
+                <input type="text" id="second" v-model="second"><br>
+              </form>
+              <button type="button" v-on:click="insert">등록</button>
+            </div>`,
+      data: function () {
+        return {
+          first: '',
+          second: ''
+        }
+      },
+      methods: {
+        insert: function () {
+          this.$emit('input-data', this.first, this.second);
+        }
+      }
+    }
+
+    let inputApp = new Vue({
+      el: '#app2',
+      data: {
+        header: '책 저자 폼',
+        firstLable: '제목 : ',
+        secondLable: '저자 : ',
+        firstData: '',
+        secondData: '',
+      },
+      components: {
+        'form-component': formComponent
+      },
+      methods: {
+        inputData: function (first, second) {
+          this.firstData = first;
+          this.secondData = second;
+        }
+      }
+    });
+  </script>
+
+  <!-- 범위 slot : template -->
+  <hr>
+  <div id="app3">
+    <data-component v-bind:data-list="books">
+      <h1 slot="header">{{header}}</h1>
+      <template slot="data" slot-scope="child">
+        <!--slot에 바인딩 되어있는 자식컴포넌트(datacomponent의 data)의 데이터 받아오는 거 slot-scope-->
+        <!--child는 임의값임ㅇㅇ-->
+        <h2>
+          <i>{{child.text.title}}</i>
+          <small>by : {{child.text.author}}</small>
+        </h2>
+      </template>
+    </data-component>
+  </div>
+
+  <script>
+    const dataComponent = {
+      template: `
+              <div>
+                <slot name="header"></slot>
+                <slot name="data" v-for="data in dataList" v-bind:text="data"></slot>
+              </div>
+              `,
+              // v-bind:text="data" slot에 text라는 프로퍼티가 있다고 생각해주면 됨?
+      props: ['dataList']
+    }
+
+    let bookApp = new Vue({
+      el: '#app3',
+      components: {
+        'data-component': dataComponent
+      },
+      data: {
+        header: '책 제목',
+        books: [{
+            author: 'John Smith',
+            title: 'Best of Times'
+          },
+          {
+            author: 'John Doe',
+            title: 'Go West Young Man'
+          },
+          {
+            author: 'Avery Katz',
+            title: 'The Life and Times of Avery'
+          }]
+      }
+    })
+  </script>
+</body>
+
+</html>
