@@ -18,7 +18,8 @@ export default {
   data: function () {
     return {
       title: '',
-      content: ''
+      content: '',
+      dataArray : []
     }
   },
   methods: {
@@ -28,11 +29,14 @@ export default {
     boardSave: function () { 
       $.ajax({
         url : 'http://192.168.0.51:8081/myserver/boardInsert',
-        method : 'post',
-        dataType : 'form',
-        success : function(title, content){
-          console.log(title, content)
-          let dataArray = this.$parent.getDataArray();
+        method : 'POST',
+        data : {
+          title : this.title,
+          content : this.content
+        },
+        success : function(){
+          //console.log(title, content)
+          let dataArray = this.dataArray;
           let no = 1;
           if (dataArray.length != 0) {
             let index = dataArray.length - 1;
@@ -48,14 +52,54 @@ export default {
     
           dataArray.push(board_info);
     
-          this.$parent.setDataArray(dataArray);
+          //this.$parent.setDataArray(dataArray);
           this.$router.push({name : 'boardList'}); // 강제로경로요청
         }
       })
       
       //this.$emit('board-save', this.title, this.content);
 
-     
-    }
+
+
+  // fetch('http://192.168.0.51:8081/myserver/boardInsert', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify({
+  //     title: this.title,
+  //     content: this.content
+  //   })
+  // })
+  // .then(response => {
+  //   if (response.ok) {
+  //     let dataArray = this.$parent.getDataArray();
+  //     let no = 1;
+  //     if (dataArray.length != 0) {
+  //       let index = dataArray.length - 1;
+  //       no = parseInt(dataArray[index].no) + 1;
+  //       // json 내부의 모든 값은 string
+  //     }
+  //     let board_info = {
+  //       'no': no,
+  //       'title': this.title,
+  //       'content': this.content,
+  //       'view': 0
+  //     };
+
+  //     dataArray.push(board_info);
+
+  //     this.$parent.setDataArray(dataArray);
+  //     this.$router.push({ name: 'boardList' }); // 강제로 경로 요청
+  //   } else {
+  //     console.log('Error:', response.statusText);
+  //   }
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
+}
+
+    
   }
 };
