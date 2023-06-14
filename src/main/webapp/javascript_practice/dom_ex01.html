@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+
+    table {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>회원정보</h3>
+  <form>
+    <div>
+      <label for="userId">회원번호</label>
+      <input type="text" name="id" readonly>
+    </div>
+    <div>
+      <label for="">이름</label>
+      <input type="text" name="firstName"><br>
+      <label for="">성</label>
+      <input type="text" name="lastName"><br>
+      <p></p>
+    </div>
+    <div>
+      <label for="">생년월일</label>
+      <input type="date" name="birthday">
+    </div>
+    <div>
+      <label for="">비고</label>
+      <input type="text" name="comment">
+    </div>
+    <div>
+      <button type="submit">등록</button>
+      <button type="reset">취소</button>
+    </div>
+  </form>
+  <div>
+    <table id="list">
+
+      <thead>
+        <tr>
+          <th>회원번호</th>
+          <th>이름</th>
+          <th>성</th>
+          <th>생년월일</th>
+          <th>비고</th>
+          <th>삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+  <script>
+    let nameTages = document.querySelectorAll('input[name*="Name"]');
+    nameTages.forEach(el => {
+      el.addEventListener('change', function (e) {
+        // 1) 사용자가 입력한 내용 중 성과 이름을 합쳐서 하나의 이름으로 변경 -> 밑에 출력
+        console.log('입력');
+        let fName = document.getElementsByName('firstName')[0].value;
+        let lName = document.getElementsByName('lastName')[0].value;
+        //document.querySelector('input[name="firstName"]').value;
+        let fullName = fName + '' + lName;
+
+        //el.parentElement.lastElementChild.textContent = fullName;
+        let tTag = e.currentTarget.parentNode.lastElementChild;
+        tTag.textContent = fullName;
+      })
+    })
+
+    // 2) 등록버튼을누를경우 현재 form이 가지고 있는 input 태그의 정보를 객체로 변환
+    // 3) table에 해당 객체를 기반으로 행을 추가, 이때 마지막 td는 button태그를 가져야함
+    // 숙제
+    // 3-1) tr 태그에 click 이벤트 -> 모든 td 태그의 데이터를 form으로 출력
+    // 3-2) button 태그에 click 이벤트 -> 해당 태그를 감싸고 있는 tr 태그 삭제 : remove()
+    document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
+      e.preventDefault();
+      let inputList = document.querySelectorAll('form input');
+      let userObj = {};
+      inputList.forEach(tag => {
+        userObj[tag.getAttribute('name')] = tag.value;
+      })
+
+      createTrData(userObj);
+      //console.log(userObj);
+      getInfo(userObj);
+      // let tr = document.createElement('tr');
+      // let td = document.createElement('td');
+      // td.textContent = userObj.firstName;
+      // tr.append(td);
+      // td.append('table');
+
+
+      //예제
+      // let newTag = document.createElement('button');
+      // newTag.addEventListener('click', function(e){
+      //   console.log('새로운태그를선택했습니다.')
+      // })
+    })
+
+    function createTrData(obj) {
+      let trTag = document.createElement('tr');
+      //for of 는 배열순환 for in 은 객체의 필드에 대해 순환
+      for (let field in obj) {
+        let tdTag = document.createElement('td');
+        tdTag.textContent = obj[field];
+        trTag.append(tdTag);
+        //객체 내부의 필드명으로 접근할 때
+        //객체.필드 <==> 객체['필드']
+        //필드 값을 변수로 넘겨준다면
+        //객체[필드]
+      }
+      let tdTag = document.createElement('td');
+      let btnTag = document.createElement('button');
+
+      btnTag.textContent = 'Del';
+      tdTag.append(btnTag);
+      trTag.append(tdTag)
+
+      document.getElementsByTagName('tbody')[0].append(trTag);
+
+      setEventTr();
+    }
+
+    function getInfo() {
+     
+      let tdList = document.querySelectorAll('td');
+      let inputList = document.querySelectorAll('form input');
+
+      let tdObj = {};
+
+      for (var i = 0; i < inputList.length; i++) {
+        let tdContent = tdList[i].textContent;
+        let inputName = inputList[i].name;
+        tdObj[inputName] = tdContent;
+      }
+      console.log(tdObj);
+
+      for (var i = 0; i < inputList.length; i++) {
+        let inputName = inputList[i].name;
+        if (tdObj.hasOwnProperty(inputName)) {
+          inputList[i].value = tdObj[inputName];
+        }
+      }
+    }
+
+
+    function setEventTr() {
+      let trList = document.querySelectorAll('tr');
+      trList.forEach(tr => {
+        tr.addEventListener('click', getInfo);
+      });
+    }
+    // document.querySelectorAll('button')[0].addEventListener('click', function(e){
+    //   e.preventDefault();
+    //   let fName = document.querySelector('input[name="firstName"]');
+    //   let lName = document.querySelector('input[name="firstName"]');
+    //   let bDay = document.querySelector('input[name="birthday"]');
+    //   let comment = document.querySelector('input[name="comment"]');
+    //   console.log(fName.name, fName.value);
+    // })
+  </script>
+</body>
+
+</html>

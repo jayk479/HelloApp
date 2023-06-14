@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .red{ color: red; }
+    .blue{ color:blue; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Cities</h1>
+      <ul>
+        <li id="one" class="red">Seoul</li>
+        <li id="two" class="red" name="england">London</li>
+        <li id="three" class="blue">NewYork</li>
+        <li id="four">Tokyo</li>
+      </ul>
+      <template>
+        <div>
+          <h3>템플릿</h3>
+        </div>
+      </template>
+    </div>
+      <script>
+        //document의 메소드 사용 : DOM에 등록된 대상만 검색
+        //속성으로 가져올 때(특정지어서)는 getElement가 낫고
+        let selectTag = document.getElementById('two');
+        console.log(selectTag);
+        selectTag = document.getElementsByName('england')[0];
+        console.log(selectTag);
+        selectTag = document.getElementsByTagName('li')[1];
+        console.log(selectTag);
+   
+
+        //css선택자사용
+        //관계를 이용 할 때(구조적인부분안에서 구조를만족하면)는 querySelector가 나음ㅇㅇ
+        selectTag = document.querySelector('ul > li:nth-child(2)');
+        console.log(selectTag);
+        selectTag = document.querySelector('ul > li');
+        //여러개라면 무조건 첫번째것을 가져옴ㅇㅇ
+        console.log(selectTag);
+      
+        selectTag =document.querySelectorAll('ul > li');
+        console.log(selectTag);
+        //이벤트는 반복문 돌려서 개별등록해야됨
+        //jQurey랑은 다름ㅇㅇ  
+
+        console.log('------------------------');
+
+        //탐색관련
+        let ulTag=document.querySelector('ul');
+        //부모 : parentNode
+        console.log('parentNode', ulTag.parentNode); //부모가textNode인경우xxxx
+        //자식 : 모든 - children(자식노드중elecment만 반환, 
+        //       첫번째 자식-firstElementChild, 
+        //       마지막자식 -lastElemetnChild 
+        console.log('children', ulTag.children);
+        console.log('children', ulTag.firstElementChild);
+        console.log('children', ulTag.lastElementChild);
+        //형제 : 앞 priviousElementSibling, 뒤 nextElementSibling
+        console.log('앞에존재하는형제', ulTag.previousElementSibling);
+        console.log('뒤에존재하는형제', ulTag.nextElementSibling);
+
+        // 속성 제어 : 객체 
+        let liTag = document.getElementById('two');
+        liTag.id = "second";
+        liTag.className = "blue"; // 기존 값 대체해버림
+        liTag.classList.add("select"); // 기존 클래스 값 유지하면서 추가함
+                                       // class는 복수값을 인정함. bootstrap에서 잘 볼 수 있음ㅇㅇ
+        liTag.textContent = "Content Update";
+        liTag.value = ""; //liTag에는 value속성없어서 안 돎ㅇㅇ
+        // liTag.innerHTML; //보안이 취약해서 사용xxx
+        // liTag.innerHTML -> readonly 가져오는 건 상관xx
+        
+        // 상기속성제외는 이하와 같이 setAttribute
+        // 그외속성 가져올땐getAttribute
+        liTag.setAttribute("name", "Eng");
+
+        // innerTEXT innerHTML 둘 다 RETURN값은 TEXT
+        // innerText 보다는 textContet가 속도가 더 빠르고 이쪽이 표준임ㅇㅇ
+
+        // innerHTML vs. innerText(textContent)
+        let str = '<h3>새롭게 추가되는 데이터</h3>';
+        // innerHTML : 태그부분인식가능, 바로 append됨ㅇㅇ, 그러나 보안취약
+        // innerText : 단순문자열로인식
+        //document.getElementsByTagName('div')[0].innerText = str;
+
+      </script>
+</body>
+</html>
