@@ -24,7 +24,7 @@ function init() {
 // 전체사원조회
 const headers = ['employee_id', 'name', 'job_id']; // 1) 필요한 field값을 배열로 순서대로 둔다
 function getEmpList() {
-  fetch('http://192.168.0.51:8081/myserver/empSelect')
+  fetch('http://localhost:8081/myserver/empSelect')
     .then(response => response.json())
     .then(data => {
       //console.log(data);
@@ -80,7 +80,7 @@ function createTrData(info) {
   for (let header of headers) {
     tdTag = document.createElement('td');
     let value = info[header];
-    if(header == 'name'){
+    if (header == 'name') {
       value = info['first_name'] + ', ' + info['last_name'];
     }
     tdTag.textContent = value;
@@ -98,7 +98,7 @@ function createTrData(info) {
 
 //업무전체조회
 function getAllJob() {
-  fetch('http://192.168.0.51:8081/myserver/empJob')
+  fetch('http://localhost:8081/myserver/empJob')
     .then(response => response.json())
     .then(data => {
       //console.log(data);
@@ -118,55 +118,156 @@ function printEmpInfo(e) {
     return;
   }
   let tdList = e.currentTarget.querySelectorAll('td');
+  let empId = tdList[1].textContent;
 
-  let inputList = document.querySelectorAll('form input');
-  console.log(inputList);
+  fetch('http://localhost:8081/myserver/empFind?employee_id=' + empId)
+    .then(resolve => resolve.json())
+    .then(data => {
+      let keys = Object.keys(data);
+      let inputList = document.querySelectorAll('form input');
+      for (i = 0; i < inputList.length; i++) {
+        for (j = 0; j < keys.length; j++) {
+          let key = keys[j];
+          if (inputList[i].getAttribute('name') == keys[j]) {
+            inputList[i].value = data[key];
+          }
+        }
+      }
+      //console.log(data);
+      //return data;
+      // input value에 맞춰 select의 option바꿔주기
 
-  let tdOdj={}
-  
-  console.log(tdList);
-  
-  //console.log(tdList[0].textContent);
-  //console.log(empId);
-  //console.log(empId[0].innerText);
-
-  for (let i = 0; i < tdList.length; i++){
-    inputList[i].value = tdList[i].textContent;
-  }   
-  
-
+    })
+    .catch(reject => console.log(reject))
 }
 
 // -> 삭제버튼 클릭이벤트
 function delEmpInfo(e) {
- 
+
+  if (e.target.tagName != 'BUTTON') {
+    return;
+  }
+  let tdList = e.target.closest('tr').querySelectorAll('td');
+  let empId = tdList[1].textContent;
+  //console.log(empId);
+
+  fetch('http://localhost:8081/myserver/empDelete', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        'employee_id': empId
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.employee_id);
+      location.reload();
+    })
 
 }
 
 //등록
-function insertEmpInfo(e){
+function insertEmpInfo(e) {
+  // console.log(e.target);
+  let inputList = document.querySelectorAll('form input');
+  let userObj = {};
+  inputList.forEach(info => {
+    userObj[info.getAttribute('name')] = info.value;
+  })
 
+  fetch('http://localhost:8081/myserver/empInsert', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(userObj)
+    })
+    .then(response => response.json())
+    .then(data => {
+      //console.log(data);
+      createTrData(data);
+    })
+    .catch(err => console.log(err))
 }
 
 // 수정
-function updateEmpInfo(e){
+function updateEmpInfo(e) {
+  let empId = document.querySelector('input[name="employee_id"]').value;
+  let empInfo = {};
 
+  let inputList = document.querySelectorAll('form input');
+  inputList.forEach(input => {
+    empInfo[input.getAttribute('name')] = input.value;
+  });
+
+  fetch('http://localhost:8081/myserver/empUpdate?employee_id=' + empId, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(empInfo)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      location.reload();
+    })
+    .catch(err => console.log(err));
 }
 
 //선택된사원삭제
-function delEmpList(e){
+function delEmpList(e) {
+  let chkList = document.querySelectorAll('td > input[type="checkbox"]');
+  let checkedList = [];
+  let empIdList = [];
+  chkList.forEach(chk => {
+    if (chk.checked) {
+      checkedList.push(chk);
+    }
+  })
 
+  checkedList.forEach(checked => {
+    let empId = checked.closest('tr').querySelectorAll('td')[1].textContent;
+    //console.log(empId);
+    empIdList.push(empId);
+  });
+  //console.log(empIdList[0])
+
+  let requestBody = [];
+  for(let i = 0; i < empIdList.length; i++){
+    let obj = {
+      'employee_id' : empIdList[i]
+    }
+    requestBody.push(obj);
+  }
+  //console.log(requestBody);
+  
+  fetch('http://localhost:8081/myserver/empListDelete', {
+    method : 'POST',
+    headers : {
+      'content-type' : 'application/json'
+    },
+    body : JSON.stringify(requestBody)
+  })
+  .then(response => response.json())
+  .then(data => {
+    //console.log(data.length);
+    location.reload();
+  })
+  .catch(err => console.log(err))
 }
 
 //selected -> input출력
-function printSelectJob(e){
+function printSelectJob(e) {
   let selectTag = e.currentTarget;
   let selectedVal = selectTag.options[selectTag.selectedIndex].value;
   selectTag.nextElementSibling.value = selectedVal;
 }
 
 //전체선택여부
-function isAllChecked(e){
+function isAllChecked(e) {
   let chTag = e.currentTarget;
   let chkInputList = document.querySelectorAll('td > input[type="checkbox"]')
   chkInputList.forEach(tag => tag.checked = chTag.checked);
