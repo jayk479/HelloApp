@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajax</title>
+  <style>
+    /* p{
+      display : inline;
+    } */
+  </style>
+</head>
+
+<body>
+  <div>
+    <div id="result">
+
+    </div>
+  </div>
+
+  <script>
+    fetch('http://192.168.0.51:8081/myserver/empSelect')
+      .then(response => response.json()) //데이터만 있는게 아니고 response객체 그 자체임ㅇㅇ
+      .then(data => {
+        console.log(data);
+
+        // for(let info in data){
+        //   for(let field in data[info]){
+        //     let pTag = document.createElement('p');
+        //     pTag.textContent = field + ' : ' + data[info][field];
+        //     result.append(pTag);
+        //   }
+        // }
+
+        // for(let i = 0; i < data.length; i++){
+        //   let pTag = document.createElement('p');
+        //   pTag.textContent = data[i].employee_id + ' : ' + data[i].first_name + ', ' + data[i].last_name;
+        //   document.getElementById('result').append(pTag);
+        // }
+
+        // data.forEach(el => {
+        //   let pTag = document.createElement('p');
+        //   pTag.textContent = el.employee_id + ' : ' + el.first_name + ' - ' + el.last_name;
+        //   document.getElementById('result').append(pTag);
+        // });
+
+        data.forEach(emp => {
+          let pTag = document.createElement('p');
+          pTag.textContent = JSON.stringify(emp);
+          result.append(pTag);
+        });
+        document.getElementsByTagName('div')[0].append(result);
+
+        
+
+
+      })
+      .catch(reject => console.log(reject))
+    //.finally() //성공실패여부관계없이실행
+
+    // 단건조회
+    fetch('http://192.168.0.51:8081/myserver/empFind?employee_id=100')
+      .then(response => response.json())
+      .then(data => {
+        let pTag = document.createElement('p');
+        pTag.textContent = JSON.stringify(data);
+        let divTg = document.getElementById('result').textContent = '';
+        divTg.append(pTag);
+        document.getElementsByTagName('div')[0].append(divTg);
+      })
+      .catch(reject => console.log(reject));
+
+      // 수정
+      let empInfo = {
+        'employee_id' : 100,
+        'last_name' : 'King'
+      }
+
+      fetch('http://192.168.0.51:8081/myserver/empUpdate', {
+        method : 'POST',
+        headers : {
+          'content-type' : 'application/json'
+        },
+        body : JSON.stringify(empInfo)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(reject => console.log(reject))
+
+
+    function handler(res) {
+      //console.log(res);
+      return res.json();
+    }
+  </script>
+</body>
+
+</html>

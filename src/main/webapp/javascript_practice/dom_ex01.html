@@ -22,7 +22,7 @@
   <h3>회원정보</h3>
   <form>
     <div>
-      <label for="userId">회원번호</label>
+      <label for="">회원번호</label>
       <input type="text" name="id" readonly>
     </div>
     <div>
@@ -42,6 +42,7 @@
     </div>
     <div>
       <button type="submit">등록</button>
+      <button type="button">수정</button>
       <button type="reset">취소</button>
     </div>
   </form>
@@ -65,44 +66,46 @@
 
   </div>
   <script>
-    let nameTages = document.querySelectorAll('input[name*="Name"]');
-    nameTages.forEach(el => {
-      el.addEventListener('change', function (e) {
-        // 1) 사용자가 입력한 내용 중 성과 이름을 합쳐서 하나의 이름으로 변경 -> 밑에 출력
-        console.log('입력');
-        let fName = document.getElementsByName('firstName')[0].value;
-        let lName = document.getElementsByName('lastName')[0].value;
-        //document.querySelector('input[name="firstName"]').value;
-        let fullName = fName + '' + lName;
+    // let nameTages = document.querySelectorAll('input[name*="Name"]');
+    // nameTages.forEach(el => {
+    //   el.addEventListener('change', function (e) {
+    //     // 1) 사용자가 입력한 내용 중 성과 이름을 합쳐서 하나의 이름으로 변경 -> 밑에 출력
+    //     console.log('입력');
+    //     let fName = document.getElementsByName('firstName')[0].value;
+    //     let lName = document.getElementsByName('lastName')[0].value;
+    //     //document.querySelector('input[name="firstName"]').value;
+    //     let fullName = fName + '' + lName;
 
-        //el.parentElement.lastElementChild.textContent = fullName;
-        let tTag = e.currentTarget.parentNode.lastElementChild;
-        tTag.textContent = fullName;
-      })
-    })
+    //     //el.parentElement.lastElementChild.textContent = fullName;
+    //     let tTag = e.currentTarget.parentNode.lastElementChild;
+    //     tTag.textContent = fullName;
+    //   })
+    // })
 
     // 2) 등록버튼을누를경우 현재 form이 가지고 있는 input 태그의 정보를 객체로 변환
     // 3) table에 해당 객체를 기반으로 행을 추가, 이때 마지막 td는 button태그를 가져야함
     // 숙제
     // 3-1) tr 태그에 click 이벤트 -> 모든 td 태그의 데이터를 form으로 출력
     // 3-2) button 태그에 click 이벤트 -> 해당 태그를 감싸고 있는 tr 태그 삭제 : remove()
+    // => 동적으로 만들어지는 태그에 이벤트를 거는 방법 2가지 1) append 후에, 2) 생성즉시
+
+    
+    // 생성
     document.getElementsByTagName('form')[0].addEventListener('submit', function (e) {
       e.preventDefault();
-      let inputList = document.querySelectorAll('form input');
-      let userObj = {};
-      inputList.forEach(tag => {
-        userObj[tag.getAttribute('name')] = tag.value;
-      })
 
+      if (document.getElementsByName('id')[0].value != '') return;
+      let userObj = getFormInfo();
+      userObj.id = getUserId();
       createTrData(userObj);
-      //console.log(userObj);
-      getInfo(userObj);
-      // let tr = document.createElement('tr');
-      // let td = document.createElement('td');
-      // td.textContent = userObj.firstName;
-      // tr.append(td);
-      // td.append('table');
 
+      // 1) append 후에
+      // let trTag = document.querySelectorAll('tbody > tr:last-child');
+      // trTag.forEach(el => {
+      //   el.addEventListener('click', function (e) {
+      //     //이벤트 동작 추천xx
+      //   })
+      // })
 
       //예제
       // let newTag = document.createElement('button');
@@ -113,6 +116,22 @@
 
     function createTrData(obj) {
       let trTag = document.createElement('tr');
+
+      // 2) 생성즉시, tr태그이벤트
+      trTag.addEventListener('click', function (e) {
+        //let tdList = trTag.querySelectorAll('td');
+        if (e.target.tagName == 'BUTTON') {
+          return;
+        } // 이벤트발생한태그가 BUTTON이면 중단 == 이벤트동작제어 전파는, 버블링은 계속됨
+
+        //이하는 trTag아래 뭐가 있을 때 발생?
+        let tdList = e.currentTarget.querySelectorAll('td');
+        let inputList = document.querySelectorAll('form input');
+        for (let i = 0; i < inputList.length; i++) {
+          inputList[i].value = tdList[i].textContent;
+        }
+      })
+
       //for of 는 배열순환 for in 은 객체의 필드에 대해 순환
       for (let field in obj) {
         let tdTag = document.createElement('td');
@@ -126,17 +145,97 @@
       let tdTag = document.createElement('td');
       let btnTag = document.createElement('button');
 
+      // 2) 생성즉시, button태그이벤트
+      btnTag.addEventListener('click', function (e) {
+        e.currentTarget.parentNode.parentNode.remove();
+        //e.stopPropagation(); //이벤트버블링막음
+      })
       btnTag.textContent = 'Del';
       tdTag.append(btnTag);
       trTag.append(tdTag)
 
       document.getElementsByTagName('tbody')[0].append(trTag);
-
-      setEventTr();
     }
 
+    // 수정
+    document.querySelector('form button[type="button"]').addEventListener('click', function () {
+      if (document.getElementsByName('id')[0].value == '') return;
+      // form -> obj
+      let userObj = getFormInfo()
+      //함수를 호출 할 때 왼쪽에 변수가 있다면 그 결과를 가져오는 코드가 필요 = return
+
+      // obj.id -> search
+      let trTag = getUpdateTr(userObj.id);
+
+      // -> update
+      let tdList = trTag.getElementsByTagName('td');
+
+      let index = 0;
+      for (let field in userObj) {
+        tdList[index].textContent = userObj[field];
+        index++;
+      }
+      
+    // 이하 셀프
+    //   let idList = document.querySelectorAll('table tr td:nth-child(1)');
+    //   for(var i = 0; i < trList.length; i++){
+    //     if(idList[i].textContent == userObj.id){
+    //       //console.log(idList[i].textContent)
+    //       trList[i].replaceChildren(createTrData(userObj).textContent);
+    //     }return;
+    // }
+
+    })
+
+    //userId 자동생성 SELECT NVL(MAX(user_id), 0) + 1 FROM tableName을 코드로 표현
+    function getUserId() {
+      let idTags = document.querySelectorAll('table tr td:nth-child(1)');
+      let userId = 0;
+      //console.log(idTags);
+      // 1) 데이터가 없는 경우
+      if (idTags.length == 0) {
+        userId = 100;
+      }
+      // 2) 데이터가 있는 경우
+      else {
+        userId = parseInt(idTags[idTags.length - 1].textContent) + 1;
+        //                 index
+      }
+      return userId;
+    }
+
+    
+    function getFormInfo() {
+      let inputList = document.querySelectorAll('form input');
+      let userObj = {};
+      inputList.forEach(tag => {
+        userObj[tag.getAttribute('name')] = tag.value;
+      })
+
+      return userObj; //동작시킨결과로데이터를받겠다
+    }
+
+    function getUpdateTr(userId) {
+      let tdList = document.querySelectorAll('table tr td:nth-child(1)');
+
+      let selectedTage = '';
+      tdList.forEach(tag => {
+        if (tag.textContent == userId) {
+          selectedTage = tag.parentNode;
+          return;
+        }
+      })
+
+      return selectedTage;
+    }
+
+
+    //setEventTr();
+
+
+    //이하self230615
     function getInfo() {
-     
+
       let tdList = document.querySelectorAll('td');
       let inputList = document.querySelectorAll('form input');
 
@@ -156,7 +255,6 @@
         }
       }
     }
-
 
     function setEventTr() {
       let trList = document.querySelectorAll('tr');

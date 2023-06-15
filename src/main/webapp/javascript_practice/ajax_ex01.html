@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사원 정보 관리</title>
+  <style>
+    table, th, td{
+      border: 1px solid black;
+    }
+
+  </style>
+</head>
+<body>
+  <div>
+    <div>
+      <!--입력폼 -> 등록/수정-->
+      <form>
+        <div>
+          <label>사원번호</label>
+          <input type="number" name="employee_id">
+        </div>
+        <div>
+          <label>성</label>
+          <input type="text" name="last_name">
+        </div>
+        <div>
+          <label>이름</label>
+          <input type="text" name="first_name">
+        </div>
+        <div>
+          <label>이메일</label>
+          <input type="text" name="email">
+        </div>
+        <div>
+          <label>업무</label>
+          <select id="job">
+            <option value="" selected>---</option>
+          </select>
+          <input type="text" name="job_id">
+        </div>
+        <div>
+          <label>입사일</label>
+          <input type="date" name="hire_date">
+        </div>
+        <div>
+          <button type="reset">초기화</button>
+          <button type="button" id="insertBtn">등록</button>
+          <button type="button" id="updateBtn">수정</button>
+        </div>
+      </form>
+    </div>
+    <div>
+      <!-- 현재 사원 목록 출력 -->
+      <button type="button" id="checkDelBtn" style="margin-left: 200px;">선택삭제</button>
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="allChk"></th>
+            <th>사원번호</th>
+            <th>이름</th>
+            <th>업무</th>
+            <th>삭제</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="ajax_ex01.js"></script>
+  <script>
+    init();
+  </script>
+</body>
+</html>
