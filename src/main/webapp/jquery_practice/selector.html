@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+<body>
+  <div>
+    <h1 class="blue">제이쿼리</h1>
+    <h3 id="title">선택자</h3>
+    <h3 class="blue">직접선택자</h3>
+    <h4>그룹선택자</h4>
+  </div>
+  <script>
+    let result = jQuery('*'); // 해당 페이지에 존재하는 모든 태그에 대한 정보
+    console.log(typeof result); 
+    // jQuery를 통해 태그를 가져오면 이건 배열x 객체임ㅇㅇ
+    
+    // id
+    let tag = $('#title').text('텍스트변경').addClass('red');
+    //메소드를 단순 호출하는 것에서 끝나지 않고 오브젝트형식으로 반환한다
+    //하나의 태그에 동시적용 할 거라면 한꺼번에 수정 가능ㅇㅇ
+   
+    console.log(tag); //jQuery는 반환되는 게 배열임, 문자열을 기반하여 모든 작업 처리
+    // tag
+    tag = $('h3');
+    console.log(tag)
+    // class
+    tag = $('.blue').css('background-color', 'skyblue')
+                        //매개변수 1)속성 매개변수 2)속성값
+                    .on('click', function(e){
+                      alert('클릭이벤트가발생했습니다.')
+                    });
+    console.log(tag)
+
+    // 선택자 :  한 건, 여러건
+    //jQuery의 DEFAULT;
+    tag = $('h1.blue'); // 공백차이있음ㅇㅇ : 공백유 : h1 하위 요소 중 ~찾음
+                        //                  > 는 다이렉트
+
+    console.log(tag);
+    
+    tag = $('h1[class="blue"]');
+    console.log(tag);
+    
+
+    let hTag = $('div > *');
+    hTag.each((idx, tag) => {
+      //       index, 배열 // 결과는 element임ㅇㅇ일반
+      //console.log(tag.text());
+      console.log(tag.textContent);
+      //반복문하면 제이쿼리객체 아님 => 그래서 javascirpt언어 써줘야 됨
+    })
+    console.log(hTag);
+    console.log(hTag[0]);
+    // 자바스크립트는 배열이지만 객체임
+    // 결과가 여러건이면 배열로 인식하자
+    // 한 건이면 그 자체로 태그
+    
+
+    let pTAG = $('<p id="selector">Yedam</p>')
+    // 태그 생성시 태그 속성 값 다 한꺼번에 생성
+    $('div').append(pTAG);
+  </script>
+</body>
+</html>

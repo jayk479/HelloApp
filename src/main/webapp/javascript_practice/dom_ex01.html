@@ -192,11 +192,11 @@
       let idTags = document.querySelectorAll('table tr td:nth-child(1)');
       let userId = 0;
       //console.log(idTags);
-      // 1) 데이터가 없는 경우
+      // 1) 데이터가 없는 경우 == null만 있을 때 NVL한 거임ㅇ
       if (idTags.length == 0) {
         userId = 100;
       }
-      // 2) 데이터가 있는 경우
+      // 2) 데이터가 있는 경우 // MAX(USER_ID) + 1 
       else {
         userId = parseInt(idTags[idTags.length - 1].textContent) + 1;
         //                 index
