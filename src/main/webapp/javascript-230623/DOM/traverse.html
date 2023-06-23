@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>traverse.html</title>
+</head>
+
+<body>
+  <table>
+    <tr data-no="s01">
+      <td>1</td>
+      <td>홍길동</td>
+      <td>90</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+    <tr data-no="s02">
+      <td>2</td>
+      <td>이순신</td>
+      <td>100</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+    <tr data-no="s03">
+      <td>3</td>
+      <td>김기자</td>
+      <td>80</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+  </table>
+  <button type="button" id="btnSum">합계</button>
+ 
+  <div id="result"></div>
+  <script>
+    //합계계산
+    btnSum.addEventListener('click', sumScore) 
+    
+    function sumScore(){
+      let scoreList = document.querySelectorAll('table tr td:nth-child(3)');
+      let scoreSum = 0;
+      scoreList.forEach(score => {
+        scoreSum = scoreSum + Number(score.textContent); 
+        // null이 있는 경우 Number, parseInt 는 '100px' 의 경우 => 100만 남김ㅇㅇ
+      })
+      document.getElementById('result').textContent = scoreSum;
+      //console.log(scoreSum);
+    }
+
+    //table 에 이벤트 btn이벤트걸기ㅇㅇ
+    document.querySelector('table'), addEventListener('click', function () {
+      //타겟이 버튼인지 체크
+      //if(event.taget.tagName =='BUTTON'){
+      if (event.target.classList.contains('btnInfo')) {
+        //버튼이 포함된 행의 이름을 콘솔에 출력
+        let tr = event.target.closest('tr').children[1].textContent; //children 은 속성임
+        console.log(tr);
+      }
+      if (event.target.className == 'btnDel') {
+        let tr = event.target.closest('tr').remove();
+        sumScore();
+      }
+    })
+  </script>
+</body>
+
+</html>

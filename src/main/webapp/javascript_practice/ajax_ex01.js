@@ -109,6 +109,7 @@ function createTrData(info) {
 
 //업무전체조회
 function getAllJob() {
+  //58.238.119.9
   fetch('http://192.168.0.51:8081/myserver/empJob')
     .then(response => response.json())
     .then(data => {

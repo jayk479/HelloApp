@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dom.html</title>
+  <script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+  <input id="textFruit">
+  <button type="button" id="btnAdd">추가</button><br>
+  <textarea id="areaList"></textarea>
+  
+
+<script>
+  //추가버튼을 클릭하면 input태그의 입력값을 textarea에 추가하기
+  $('#btnAdd').on('click', function(){
+    let fruit = $('#textFruit').val(); // 함수하나로 set, get 다 됨ㅇㅇ
+    let ctn = $('#areaList').val() + fruit; 
+    $('#areaList').val(ctn);
+    $('#textFruit').val('');
+  })
+</script>
+</body>
+</html>

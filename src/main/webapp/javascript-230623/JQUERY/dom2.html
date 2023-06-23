@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dom2.html</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <input id="textFruit"><input id="textPrice">
+  <button type="button" id="btnAdd">추가</button><br>
+
+  <ul id="fruitList">
+    <!-- <li> </li> -->
+    <li class="fruit" data-price="200">사과</li>
+    <li class="fruit" data-price="300">바나나</li>
+
+  </ul>
+
+
+  <script>
+    //li mouseover 이벤트 : 금액을 alret 출력 : 그룹이벤트
+    $('#fruitList').on('mouseover', 'li', function () { //새로 생성된 li에도 적용됨ㅇㅇ
+    //$('li').on('mouseover',function(){
+      //this.getAttribute('data-price')
+      let price = $(this).data('price');
+      console.log(price);
+    })
+    //추가버튼을 클릭하면 input태그의 입력값을 textarea에 추가하기
+    $('#btnAdd').on('click', function () {
+      let price = $('#textPrice').val();
+      let fruit = $('#textFruit').val();
+      //let li = $('<li />').text(fruit).addClass('fruit').attr('data-price', price)
+      //let li = $('<li />').text(fruit).addClass('fruit').attr('data-price', price);
+      
+      $('#fruitList').append( $('<li />').text(fruit).addClass('fruit').attr('data-price', price));
+      //$('fruitList').append(li);
+      //console.log(fruit,price);
+      //$('fruitList').append($('<li />').text(fruit).attr('data-price', price));
+      $('#textPrice').val('');
+      $('#textFruit').val('')
+
+    })
+  </script>
+</body>
+
+</html>

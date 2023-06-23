@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>groupEvent2.html</title>
+</head>
+
+<body>
+  <input id="textFruit"><input id="textPrice">
+  <button type="button" id="btnAdd" data-xxx>추가</button><br>
+
+  <ul id="fruitList">
+    <!-- <li> </li> -->
+    <li class="fruit" data-price="200"><sapn>사과</sapn></li>
+    <li class="fruit" data-price="300"><sapn>바나나</sapn></li>
+
+  </ul>
+
+
+  <script>
+    fruitList.addEventListener('click', function () {
+      //debugger => 
+      //if (event.target.tagName == 'LI') {
+      if(event.target.parentElement.classList.contains('fruit')){
+        let price = event.target.parentElement.getAttribute('data-price');
+        let name = event.target.textContent;
+        console.log(price + " : " + name);
+      }
+    })
+
+    btnAdd.addEventListener('click', addFruitList);
+
+    function addFruitList() {
+
+      let liTag = `<li class = "fruit" data-price="${textPrice.value}"><sapn>${textFruit.value}</sapn></li>`;
+
+      fruitList.innerHTML += liTag;
+      textFruit.value = '';
+      textPrice.value = '';
+      textFruit.focus();
+    }
+  </script>
+</body>
+
+</html>

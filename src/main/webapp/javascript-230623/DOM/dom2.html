@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dom2.html</title>
+</head>
+<body>
+  <input id="textFruit"><input id="textPrice">
+  <button type="button" id="btnAdd" data-xxx>추가</button><br>
+  <!-- 데이터속성 -->
+  <!-- data-내마음대로이름지정 = '저장하는정보'-->
+  <ul id="fruitList">
+    <!-- <li> </li> -->
+    <li class = "fruit" data-price="200">사과</li>
+    <li class = "fruit" data-price="300">바나나</li>
+
+  </ul>
+  
+
+<script>
+  //추가버튼을 클릭하면 input태그의 입력값을 textarea에 추가하기
+  btnAdd.addEventListener('click', addFruitList);
+  //li mouseover 이벤트 : 금액을 alret 출력 : 그룹이벤트
+  //li태그들 찾고 
+  let liList = document.querySelectorAll('li');
+  // for(let i =0; i<liList.length; i++){
+  //   liList[i].addEventListener('mouseover', function(){
+  //     //liList[i].getAttribute('data-price');
+  //     alert('가격 : ' + liList[i].getAttribute('data-price'));
+  //   })
+  // }
+
+  // for(let li of liList){
+  //   i.addEventListener('mouseover', function(){
+  //     //liList[i].getAttribute('data-price');
+  //     alert('가격 : ' + i.getAttribute('data-price'));
+  //   })
+  // }
+
+  liList.forEach( li => {
+    i.addEventListener('mouseover', function(){
+      //liList[i].getAttribute('data-price');
+      alert('가격 : ' + i.getAttribute('data-price'));
+    })
+  })
+
+  function addFruitList(){
+    // let fruit = textFruit.value;
+    // let liTag = document.createElement('li');
+    // liTag.classList.add('fruit');
+    // liTag.setAttribute('data-id', '1')
+    // liTag.setAttribute('data-price', '200')
+    let liTag = `<li class = "fruit" data-price="${textPrice.value}">${textFruit.value}</li>`;
+  
+    //liTag.textContent = fruit;
+    //fruitList.prepend(liTag); //append 대신 before, after, prepend
+    fruitList.innerHTML += liTag;
+    textFruit.value= '';
+    textPrice.value= '';
+    textFruit.focus();
+  }
+</script>
+</body>
+</html>
