@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>json.html</title>
+</head>
+<body>
+  
+  <script>
+    let emp = {id:100, fname:'scott', 취미:['독서', '게임']}
+    let emp2 = {id:101, fname:'jone', 취미:['운동', '게임']}
+    //emp 첫번째 취미만 출력
+    console.log(emp.취미[0])
+    let emps =[emp, emp2]
+
+    //두번째 사원의 첫번째 취미
+    console.log(emps[1].취미[0])
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>movie.html</title>
+</head>
+<body>
+  <div id="result"></div>
+  <hr>
+  <div id="directorName"></div>
+  <script src="movie.js"></script>
+  <script>
+    let list = movieList.boxOfficeResult.dailyBoxOfficeList
+    list.forEach(movie => {
+      let pTag = document.createElement('p')
+      pTag.textContent =  movie.movieNm;
+      document.getElementById('result').append(pTag);
+      //document.getElementById('result').innerHTML += movie.movieNm +'<br>';
+      if(movie.movieNm == movieInfo.movieInfoResult.movieInfo.movieNm){
+        let directors = movieInfo.movieInfoResult.movieInfo.directors
+        pTag = document.createElement('p')
+        pTag.textContent = movie.movieNm + ' 감독 : ' + directors[0].peopleNm;
+        document.getElementById('directorName').append(pTag);
+      }
+    })
+  </script>
+</body>
+</html>

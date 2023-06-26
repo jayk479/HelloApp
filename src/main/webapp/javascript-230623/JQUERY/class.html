@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>class.html</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <style>
+    .active {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sec">
+    <div class="item">사과</div>
+    <div class="item active">바나나</div>
+    <div class="item">포도</div>
+    <div class="item">키위</div>
+  </div>
+  <div class="sec2">
+    <div class="item">사과</div>
+    <div class="item active">바나나</div>
+    <div class="item">포도</div>
+    <div class="item">키위</div>
+  </div>
+  <script>
+    //div클릭하면acitve클래스를추가하거나제거
+    $('.sec').on('click', ".item", function () {
+      //if($(this).contains('active')){
+      // if($(this).hasClass('active')){
+      //   $(this).removeClass();
+      // }else{
+      //   $(this).addClass('active');
+      // }
+      //기존클래스다제거
+      //$('.active').removeClass('active');
+      //$(this).toggleClass('active');
+
+      $(this).parent().find('.active').removeClass('active');
+      $(this).toggleClass('active');
+
+    })
+
+    $('.item').each(function(idx, item){ //item = DOM객체임 => $() 감싸면 jQuery객체가 됨
+      if($(item).text() == '바나나'){
+        return false;
+      }
+      //console.log(item);
+      //console.log(idx);
+      //console.log(item.textContent);
+      //console.log($(this).text());
+      console.log($(item).text());
+
+      //return // contine
+      //return false //breake
+    })
+  </script>
+</body>
+
+</html>

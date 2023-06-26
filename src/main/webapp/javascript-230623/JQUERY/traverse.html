@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>/jquery/traverse.html</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <table>
+    <tr data-no="s01">
+      <td>1</td>
+      <td>홍길동</td>
+      <td>90</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+    <tr data-no="s02">
+      <td>2</td>
+      <td>이순신</td>
+      <td>100</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+    <tr data-no="s03">
+      <td>3</td>
+      <td>김기자</td>
+      <td>80</td>
+      <td><button type="button" class="btnInfo">확인</button></td>
+      <td> <button type="button" class="btnDel">삭제</button></td>
+    </tr>
+  </table>
+  <button type="button" id="btnSum">합계</button>
+ 
+  <div id="result"></div>
+  <script>
+    //합계계산
+    $('#btnSum').on('click', sumScore) ;
+    
+    function sumScore(){
+      let scoreList = $(document.querySelectorAll('table tr td:nth-child(3)'));
+      let scoreSum = 0;
+      scoreList.each(function(idx, score){ //idx, item임 순서중요
+        scoreSum = scoreSum + Number($(score).text()); 
+      })
+      $('#result').text(scoreSum);
+      //console.log(scoreSum);
+    }
+
+    $('table').on('click', ".btnInfo", function(){
+      //console.log($(this).parent().prev().prev().text());
+      let btn = event.target;
+      console.log($(btn).closest('tr').children().eq(1).text())
+
+    })
+    $('table').on('click', ".btnDel", function(){
+      //console.log($(this).closest('tr'))
+      $(this).closest('tr').remove();
+    })
+
+  </script>
+</body>
+
+</html>
