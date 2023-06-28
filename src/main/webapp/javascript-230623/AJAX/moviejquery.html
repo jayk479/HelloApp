@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>moviejquery.html</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- <div id="result"></div> -->
+  <input id="txtDate"><button type="button" id="btnSearch">조회</button>
+  <ul id="result"></ul>
+  <div id="info"></div>
+  <script>
+    let url =
+      "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20230626";
+
+
+    $.ajax(url)
+      .done(data => callback(data));
+
+
+    function callback(data) {
+
+      console.log(data)
+      document.querySelector('#result').innerHTML = "";
+      let movieList = data.boxOfficeResult.dailyBoxOfficeList;
+      movieList.forEach(movie => {
+        let liTag = document.createElement('li');
+        liTag.setAttribute('data-moviecd', movie.movieCd)
+        liTag.textContent = movie.movieNm;
+        result.append(liTag);
+      });
+    }
+
+
+    // btnSearch 이벤트
+    document.getElementById('btnSearch').addEventListener('click', searchMovie);
+
+    //ul이벤트위임
+    //data-moviecd 영화상세정보조회(directors or genres)
+    document.getElementById('result').addEventListener('click', getMoveiInfo);
+
+
+    // 날짜입력 후 조회클릭
+    function searchMovie(e) {
+      let date = document.getElementById('txtDate').value;
+      //console.log(date);
+      url =
+        "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=" +
+        date;
+
+      $.ajax(url)
+        .done(data => callback(data))
+        .fail(function(err){
+          console.log(err)
+        })
+
+    };
+
+    //li클릭시 영화정보
+    function getMoveiInfo(e) {
+
+      if (e.target.tagName != 'LI') retrun;
+
+      let movieCd = e.target.getAttribute('data-moviecd')
+      //console.log(movieCd);
+      url =
+        "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=f5eef3421c602c6cb7ea224104795888&movieCd=" +
+        movieCd;
+
+      $.ajax(url)
+        .then(data => {
+          document.querySelector('#info').innerHTML = "";
+          let movieInfo = data.movieInfoResult.movieInfo;
+          //console.log(movieInfo);
+          let actor = "";
+
+          for (ac of movieInfo.actors) {
+            actor += ac.peopleNm + ", ";
+          }
+          if (movieInfo.directors != '') {
+            if (movieInfo.movieCd == movieCd) {
+              let pTag = document.createElement('p');
+              pTag.textContent = movieInfo.movieNm + ' 감독명 : ' +
+                movieInfo.directors[0].peopleNm + ' 출연진 : ' + actor + ' 장르명 : ' + movieInfo.genres[0].genreNm;
+              info.append(pTag);
+            }
+          } else {
+            if (movieInfo.movieCd == movieCd) {
+              let pTag = document.createElement('p');
+              pTag.textContent = movieInfo.movieNm + ' 출연진 : ' + actor + ' 장르명 : ' + movieInfo.genres[0].genreNm;
+              info.append(pTag);
+            }
+          }
+
+        })
+      
+    }
+  </script>
+
+</body>
+
+</html>

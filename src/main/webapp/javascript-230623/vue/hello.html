@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hello.html</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+  <script src="load.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-lg-2">
+          Column
+        </div>
+        <!-- v-text innerText 
+              v-html innerHTML 
+          속성 v-bind 속성 
+         input v-model 양방향바인딩 -->
+        <div class="col-lg-8 border border-primary">
+          <!-- <table class="table table-hover text-start">
+          <tr >
+            <td class="table-secondary">상품명</td>
+            <td v-text="product.name"></td>
+          </tr>
+          <tr>
+            <td class="table-secondary">금액</td>
+            <td v-text="product.price"></td>
+          </tr>
+          <tr >
+            <td class="table-secondary">이미지</td>
+            <td><img v-bind:src="product.img"></td>
+          </tr>
+          <tr>
+            <td class="table-secondary">상품정보</td>
+            <td v-html="product.desc"></td>
+          </tr>
+          <tr > 
+            <td class="table-secondary">수량</td>
+            <td ><input v-model:value="product.cnt"></td>
+          </tr>
+         </table> -->
+         <myProduct></myProduct>
+         <my-product></my-product>
+         <my-login></my-login>
+      
+        </div>
+        <div class="col-lg-2 border border-success">
+          
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const {
+      createApp
+    } = Vue // vue객체 안 필드 중 createApp을 사용 { a, b, c } 여러개 할 수 있고
+    // const 안 쓰면 VUE.필드명({}) 이렇게 됨ㅇㅇ
+
+
+    createApp({
+      components: {
+        'my-product': Vue.defineAsyncComponent( () => loadModule('./product.vue', options) ),
+        'my-login': Vue.defineAsyncComponent( () => loadModule('./signin.vue', options) )
+      },
+      
+    }).mount('#app')
+    //vue 인스턴스 만들고, data를 마운트ㅇㅇ
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>movieajax.html</title>
+</head>
+
+<body>
+  <!-- <div id="result"></div> -->
+  <input id="txtDate"><button type="button" id="btnSearch">조회</button>
+  <ul id="result"></ul>
+  <div id="info"></div>
+  <script>
+    let url =
+      "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20230626";
+
+    function loadDoc(url, cFunction) {
+      const xhttp = new XMLHttpRequest(); // XMLHttpRequest 객체생성
+      xhttp.onload = function () { // 콜백함수정의
+        cFunction(this); //this = xhttp
+      }
+      xhttp.open("GET", url); // XMLHttpRequest 객체 열기
+      xhttp.send(); // 서버에 요청보내기
+    }
+
+    //콜백함수
+    function callback(xhr) {
+      // JSON.stringify() obj - > string
+      // JSON.parse() str - > obj
+      document.querySelector('#result').innerHTML = "";
+      let datas = JSON.parse(xhr.responseText)
+      let movieList = datas.boxOfficeResult.dailyBoxOfficeList;
+      movieList.forEach(movie => {
+        // let pTag = document.createElement('p');
+        // pTag.textContent = movie.movieNm;
+        // result.append(pTag);
+        let liTag = document.createElement('li');
+        liTag.setAttribute('data-moviecd', movie.movieCd)
+        liTag.textContent = movie.movieNm;
+        result.append(liTag);
+      });
+    }
+
+    loadDoc(url, callback);
+
+    // btnSearch 이벤트
+    document.getElementById('btnSearch').addEventListener('click', searchMovie);
+
+    //ul이벤트위임
+    //data-moviecd 영화상세정보조회(directors or genres)
+    document.getElementById('result').addEventListener('click', getMoveiInfo);
+    
+
+    // 날짜입력 후 조회클릭
+    function searchMovie(e) {
+      let date = document.getElementById('txtDate').value;
+      //console.log(date);
+      url =
+        "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=" +
+        date;
+      loadDoc(url, callback);
+    };
+
+    //li클릭시 영화정보
+    function getMoveiInfo(e) {
+
+      if (e.target.tagName != 'LI') retrun;
+
+      let movieCd = e.target.getAttribute('data-moviecd')
+      //console.log(movieCd);
+      url =
+        "http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=f5eef3421c602c6cb7ea224104795888&movieCd=" +
+        movieCd;
+
+      loadDoc(url, function (xhr) {
+        document.querySelector('#info').innerHTML = "";
+        let datas = JSON.parse(xhr.responseText);
+        let movieInfo = datas.movieInfoResult.movieInfo;
+        //console.log(movieInfo);
+        let actor = "";
+
+        for(ac of movieInfo.actors){
+          actor += ac.peopleNm + ", ";
+        }
+        if (movieInfo.directors != '') {
+          if (movieInfo.movieCd == movieCd) {
+            let pTag = document.createElement('p');
+            pTag.textContent = movieInfo.movieNm + ' 감독명 : ' 
+                              + movieInfo.directors[0].peopleNm + ' 출연진 : ' + actor +' 장르명 : ' + movieInfo.genres[0].genreNm;
+            info.append(pTag);
+          }
+        } else {
+          if (movieInfo.movieCd == movieCd) {
+            let pTag = document.createElement('p');
+            pTag.textContent = movieInfo.movieNm + ' 출연진 : ' + actor  + ' 장르명 : ' + movieInfo.genres[0].genreNm;
+            info.append(pTag);
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+
+</html>
