@@ -1,6 +1,6 @@
 <script>
   export default { // 뷰 인스턴스 생성
-      data() { //
+      data() { //바인딩할데이터
         return {
           //상품정보
           products: [],
@@ -12,7 +12,7 @@
         console.log('create됨');
       },
       //== create : function(){}
-      mounted() {
+      mounted() { //DOM 객체 생성 후 호출 created랑 시기는 비슷ㅇㅇ
         console.log('mount됨');
         fetch('product.json')
           .then(result => result.json())
@@ -28,21 +28,19 @@
       updated() {
         console.log('update됨'); //이런데다가원하는기능넣어주면됨ㅇㅇ
       },
-      methods: {
+      methods: { // 이벤트핸들러ㅇㅇ
         //addCart : {}
         addCart(name) {
           this.cart.push(name);
         },
-
       }
-
     }
 </script>
 
 
 
 <template>
-    <div v-for="product in products" class="card" style="width: 18rem;">
+  <div v-for="product in products" class="card" style="width: 18rem;">
     <img v-bind:src="product.img" class="card-img-top" alt="...">
     <div class="card-body">
        <h5 v-text="product.name" class="card-title">Card title</h5>

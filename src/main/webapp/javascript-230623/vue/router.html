@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>router.html</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader/dist/vue3-sfc-loader.js"></script>
+  <script src="load.js"></script>
+  <script src="router.js"></script>
+</head>
+
+<body>
+  <div id="App">
+    <!--메뉴바-->
+    <ul class="nav">
+      <li class="nav-item">
+        <router-link to="/" class="nav-link active" aria-current="page">Main</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/login" class="nav-link">login</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/product" class="nav-link">product</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/board" class="nav-link">board</router-link>
+      </li>
+    </ul>
+    <router-view></router-view>
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){},
+      mounted(){},
+      methods : {}
+    }).use(router).mount('#App'); //Vue객체생성
+
+  </script>
+</body>
+
+</html>
